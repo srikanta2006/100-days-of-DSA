@@ -1,0 +1,55 @@
+[I]
+Question number:33
+Title: Search in Rotated Sorted Array
+description: rotated sorted array is given along with a target element to search.
+
+Intuition:
+we need to use binary search but, only one side of the mide will be sorted to apply binary search.
+so we need to identify that side and then search.
+
+Approach:
+1]we need to select mid first.
+2]check on its left is it sorted or not(nums[st]<=nums[mid]) if yes then check whether target falls in left. 
+3]if yes then binary sort on left side if not right side.
+4]do the same on righ sorted array also
+
+Complexity:
+Time complexity:
+while loop decreasing n = O(logn)
+
+
+Space complexity:
+O(1)
+
+Code:
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int n=nums.size();
+        int st=0; 
+        int end=n-1;
+        while(st<=end){
+            int mid = st + (end-st)/2;
+            if(nums[mid]==target){
+                return mid;
+            }
+            if(nums[st]<=nums[mid]){ //left sorted
+                if(nums[st]<=target && target<=nums[mid]){ //search in left array
+                    end=mid-1;
+                }
+                else{  // search in right array
+                    st=mid+1;
+                }
+            }
+            else{  // right sorted
+                if(nums[mid]<=target && target<=nums[end]){ //search in right array
+                    st=mid+1;
+                }
+                else{//search in left array
+                    end=mid-1;
+                }
+            }
+        }
+        return -1;
+    }
+};
