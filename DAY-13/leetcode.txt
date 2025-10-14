@@ -1,0 +1,47 @@
+[I]
+Question number:852
+Title: Peak index in mountain array
+description: You are given an integer mountain array arr of length n where the values increase to a peak element and then decrease.
+Return the index of the peak element.
+
+Intuition:
+By seeing at the problem we can say linear searc algorithm fits perfectly with a TC of O(n).
+we can iterate on each element checking for arr[i-1]<arr[i]>arr[i+1] if yes return i.
+But we can use binary search with TC of O(logn).
+
+Approach:
+st=1, end=n-2 (to avoid edge cases)
+we have three cases after finding mid
+case 1 : arr[mid-1]<arr[mid]>arr[mid+1] => return mid
+case 2 : arr[mid-1]<arr[mid] => make st=mid+1
+case 3 : arr[mid+1]<arr[mid] => make end=mid-1
+
+Complexity:
+Time complexity:
+O(logn)
+
+Space complexity:
+O(1)
+
+Code:
+class Solution {
+public:
+    int peakIndexInMountainArray(vector<int>& arr) {
+        int n=arr.size();
+        int st=1;
+        int end=n-2;
+        while(st<=end){
+            int mid=st+(end-st)/2;
+            if(arr[mid-1]<arr[mid] && arr[mid+1]<arr[mid]){
+                return mid;
+            }
+            if(arr[mid-1]<arr[mid]){
+                st=mid+1;
+            }
+            else{
+                end=mid-1;
+            }
+        }
+        return -1;
+    }
+};
