@@ -1,0 +1,45 @@
+[I]
+Question number:75
+Title: sort colors
+description: Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
+We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively.
+
+Intuition:
+By seeing there are only 3 unique elements in the array, we can just count the occurence of each element(0,1,2) using a loop, then using another loop we can rewrite the elements.
+but this takes 2 individual loops, which can be still optimized using "DUTCH NATIONAL FLAG ALGORITHM"
+Approach:
+**Detailed explaination in 5-11-2025 notes DSA**
+we take  4 spaces(0 space, 1space, 2 space and unsorted space )
+by selecting each element from unsorted space we insert it into its space and decrease the unsorted region
+
+Complexity:
+Time complexity:
+O(n)
+
+Space complexity:
+O(1)
+
+Code:
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        int n=nums.size();
+        int low=0; 
+        int mid=0;
+        int high=n-1;
+        while(mid<=high){
+            if(nums[mid]==0){
+                swap(nums[mid], nums[low]);
+                mid++;
+                low++;
+            }
+            else if(nums[mid]==1){
+                mid++;
+            }
+            else{
+                swap(nums[mid], nums[high]);
+                high--;
+            }
+        }
+    }
+};
