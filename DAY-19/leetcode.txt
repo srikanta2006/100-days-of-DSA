@@ -1,0 +1,94 @@
+[I]
+Question number:88
+Title: Merge sorted arrays
+description: You are given two integer arrays nums1 and nums2, sorted in non-decreasing order, and two integers m and n, representing the number of elements in nums1 and nums2 respectively.
+Merge nums1 and nums2 into a single array sorted in non-decreasing order.
+The final sorted array should not be returned by the function, but instead be stored inside the array nums1. To accommodate this, nums1 has a length of m + n, where the first m elements denote the elements that should be merged, and the last n elements are set to 0 and should be ignored. nums2 has a length of n.
+
+Intuition:
+At first glance we can say that use a third a array and select each element from each array compare them and insert. But that takes extra auxilary space. we should not create new vector for this question.
+Approach:
+We use the extra space given in the first array(nums1) for inserting the sorted elements
+We compare the elements from back which are greater and rewrite the array 1 from back
+by this we can insert all the elements from both the arrays
+
+Complexity:
+Time complexity:
+O(m+n)
+
+Space complexity:
+O(1)
+
+Code:
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        int idx=m+n-1;
+        int i=m-1;
+        int j=n-1;
+        while(i>=0 && j>=0){
+            if(nums1[i]>nums2[j]){
+                nums1[idx]=nums1[i];
+                i--;
+                idx--;
+            }
+            else{
+                nums1[idx]=nums2[j];
+                j--;
+                idx--;
+            }
+        }
+        while(j>=0){
+            nums1[idx]=nums2[j];
+            j--;
+            idx--;
+        }
+    }
+};
+
+[II]
+Question number:31
+Title: Next permutation
+description: The next permutation of an array of integers is the next lexicographically greater permutation of its integer. More formally, if all the permutations of the array are sorted in one container according to their lexicographical order, then the next permutation of that array is the permutation that follows it in the sorted container. If such arrangement is not possible, the array must be rearranged as the lowest possible order (i.e., sorted in ascending order).
+Intuition:
+we can see that lexicographical next is the next possible greater number using the numbers in the array.
+for that BF - we can use recurrsion and find all the permutations
+but that is n(fac) in TC.
+Approach:
+by seeing the test cases and outputs we can see that there is a pivot element which is the first element which is breaking the acending order from backwards.
+-we need to traverse from back and find out the pivot using (array[i]<array[i+1])
+-then we need to swap it with the smallest number in right side of pivot which is greater than pivot
+-then we need to reverse the elements after the pivot position.
+
+Complexity:
+Time complexity:
+O(n)
+
+Space complexity:
+O(1)
+
+Code:
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        int piv = -1;
+        int n=nums.size();
+        for(int i=n-2; i>=0; i--){
+            if(nums[i]<nums[i+1]){
+                piv=i;
+                break;
+            }
+        }
+        if(piv==-1){
+            sort(nums.begin(), nums.end());
+            return;
+        }
+        for(int i=n-1; i>piv; i--){
+            if(nums[i]>nums[piv]){
+                swap(nums[i], nums[piv]);
+                break;
+            }
+        }
+        reverse(nums.begin()+piv+1, nums.end());        
+    }
+};
