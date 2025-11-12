@@ -1,0 +1,60 @@
+[I]
+Question number: 567
+Title: Permutations in string
+description: Given two strings s1 and s2, return true if s2 contains a permutation of s1, or false otherwise.
+In other words, return true if one of s1's permutations is the substring of s2.
+
+Intuition:
+While the bruteforce approach for this problem might apear to be straight forward next perutation problem but that is very costly wrt time complexity.
+we need to sort the s1 string to start from first permutation and check for each permutation.
+But as we can see that in all the permutations the characters and thier frequencies remain the same.-> we can use this to solve the problem using sliding window.
+Approach:
+1)create a frequency array of size 26 containing the frequencies of all characters in s1
+2)run a sliding window over s2 of size s1.length()
+3)create a frequency array of size 26 containing the frequencies of all the characters in the current window.
+4)check whether they are same and return true
+Complexity:
+Time complexity:
+O(n)
+
+Space complexity:
+O(1)
+
+Code:
+class Solution {
+public:
+    bool isEqual(int freq[26], int windowFreq[26]) {
+        for (int i = 0; i < 26; i++) {
+            if (freq[i] != windowFreq[i]) return false;
+        }
+        return true;
+    }
+
+    bool checkInclusion(string s1, string s2) {
+        if (s1.length() > s2.length()) return false;
+
+        int freq[26] = {0};
+        for (char c : s1) freq[c - 'a']++;
+
+        int windowSize = s1.length();
+        int windowFreq[26] = {0};
+
+        // Build first window
+        for (int i = 0; i < windowSize; i++) {
+            windowFreq[s2[i] - 'a']++;
+        }
+
+        // Check first window
+        if (isEqual(freq, windowFreq)) return true;
+
+        // Slide the window
+        for (int i = windowSize; i < s2.length(); i++) {
+            windowFreq[s2[i] - 'a']++;               // add new char
+            windowFreq[s2[i - windowSize] - 'a']--;  // remove old char
+
+            if (isEqual(freq, windowFreq)) return true;
+        }
+
+        return false;
+    }
+};
