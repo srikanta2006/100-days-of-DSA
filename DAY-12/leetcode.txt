@@ -4,7 +4,7 @@ Title: Search in Rotated Sorted Array
 description: rotated sorted array is given along with a target element to search.
 
 Intuition:
-we need to use binary search but, only one side of the mide will be sorted to apply binary search.
+we need to use binary search but, only one side of the mid will be sorted to apply binary search.
 so we need to identify that side and then search.
 
 Approach:

@@ -29,12 +29,12 @@ public:
 [II]
 Question number: 11
 Title: Container with most water
-description: given a array with heigh of walls. make containers using two walls which can fit most water, the conatiners are distanced in the order of the elements of the array.
+description: given a array with height of walls. make containers using two walls which can fit most water, the conatiners are distanced in the order of the elements of the array.
 Approch: 
 1] take two pointers starting from front and back.
 2] calculate volume=(back-front)*min(height[front], height[back])
 3] compare current volume with max_vol (initially 0) update it if greater
-4]now if front is less than back, move front forward else move back backwards.
+4] now if front is less than back, move front forward else move back backwards.
 5] continue this till back becomes <= front.
 code:
 

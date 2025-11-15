@@ -5,7 +5,7 @@ I]given:
 2)arr vector -> where arr[i] indicates number of pages in ith book
 3)m -> number of students
 
-II]required to return(ROR):
+II]required to return(RTR):
 min possible value of pages at a student who has max number of pages amongst all other after allocation.
 
 III]conditions:
@@ -13,7 +13,7 @@ III]conditions:
 2]each book must be given to a student
 3]allocation must happen in contigious manner.
 
-**approach and psedou code written in 17th october DSA notes**
+**approach and psuedo code written in 17th october DSA notes**
 
 */
 #include<iostream>
