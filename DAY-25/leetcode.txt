@@ -1,0 +1,46 @@
+[I]
+Question number: 240
+Title: Search a 2D Matrix II
+description: 
+Write an efficient algorithm that searches for a value target in an m x n integer matrix matrix. This matrix has the following properties:
+-Integers in each row are sorted in ascending from left to right.
+-Integers in each column are sorted in ascending from top to bottom.
+
+Intuition:
+This problem can be solved by traversing through each element of the matrix. That takes O(m*n) worst case time complexity.
+This is not affordable. To optimize the solution we ca use binary search as the elements are in sorted order in a row and col.
+Approach:
+1)Start searching from row=0; and column=n-1;
+2)
+i If found return true;
+ii if target is smaller -> col--;
+iii if target is larger ->row++;
+Complexity:
+Time complexity:
+O(m+n)
+
+Space complexity:
+O(1)
+
+Code:
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& mat, int target) {
+        int m=mat.size();
+        int n=mat[0].size();
+        int r=0;
+        int c=n-1;
+        while(c>=0 && r<=m-1){
+            if(target==mat[r][c]){
+                return true;
+            }
+            else if(target<mat[r][c]){
+                c--;
+            }
+            else{
+                r++;
+            }
+        }
+        return false;
+    }
+};
