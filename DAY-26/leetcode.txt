@@ -1,0 +1,46 @@
+[I]
+Question number: 1
+Title: Two sum
+description: 
+Given an array of numbers and a target number, find two numbers in the array which sum up to target
+
+Intuition:
+the brute force approach to solve this problem is to find all possible pairs using two loops. -> O(n^2)
+the better approach is to sort the array and use two pointer approach. -> O(nlogn)
+the best approach would be to use unordered_map as we can search an element using O(1) by using it.
+Approach:
+1)take an unordered_map<int,int> for element and its index according to the array
+2)start a for loop
+3)select first element and calculate required second=target-first.
+4)search for second in map (m.find())
+5)if found return else add the first element along with index into the map
+
+Complexity:
+Time complexity:
+O(n)
+
+Space complexity:
+O(1)
+
+Code:
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int, int> m;
+        vector<int> ans;
+        int n = nums.size();
+        for(int i=0; i<n; i++){
+            int first = nums[i];
+            int second = target - first;
+            if(m.find(second)!=m.end()){
+                ans.push_back(i);
+                ans.push_back(m[second]);
+                return ans;
+            }
+            else{
+                m[first]=i;
+            }
+        }
+        return ans;
+    }
+};
