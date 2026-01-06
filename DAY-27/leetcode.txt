@@ -1,0 +1,54 @@
+[I]
+Question number: 560
+Title: Subarray Sum Equals K 
+description: 
+Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k.
+A subarray is a contiguous non-empty sequence of elements within an array.
+
+Intuition:
+The bruteforce approach for this problem can be using 2 loops.
+finding all the subarrays and their sums. but this takes Big O of N squared time complexity which is not optimal
+Approach:
+1)We can use prefix sum of each element to solve this problem.
+2)First we need an array consisting of each index prefix sum.
+3)start a loop from first index if its prefix sum equals K then increment count
+then calculate val=ps[j]-k which is the prefix sum of starting index.
+4)if this exists before j then add the frequency of it to count.
+5)this can be done by map.
+
+Complexity:
+Time complexity:
+O(n)
+
+Space complexity:
+O(n)
+
+Code:
+
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+       int count=0;
+       int n=nums.size();
+       vector<int> ps(n,0);
+       ps[0]=nums[0];
+       for(int i=1; i<n; i++){
+        ps[i]=ps[i-1]+nums[i];
+       }
+       unordered_map<int, int> m;
+       for(int j=0; j<n; j++){
+        if(ps[j]==k){
+            count++;
+        }
+        int val = ps[j]-k;
+        if(m.find(val)!=m.end()){
+            count+=m[val];
+        }
+        if(m.find(ps[j])==m.end()){
+            m[ps[j]]=0;
+        }
+        m[ps[j]]++;
+       }
+       return count;
+    }
+};
