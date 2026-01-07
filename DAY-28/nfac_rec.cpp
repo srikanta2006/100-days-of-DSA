@@ -13,6 +13,6 @@ int main(){
     int n;
     cout << "Enter the value of N"<<endl;
     cin >> n;
-    cout << n_fac(n) << endl;;
+    cout << n_fac(n) << endl;
     return 0;
 }
