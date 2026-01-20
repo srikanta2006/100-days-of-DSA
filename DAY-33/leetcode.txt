@@ -1,0 +1,85 @@
+[I]
+Question number: 37
+Title: Sudoku Solver
+description: 
+Write a program to solve a Sudoku puzzle by filling the empty cells.
+
+Intuition:
+we need to select each empty cell and fill it with a number. 
+the number must be between 1-9, the selected number can be correct or wrong. 
+If correct then we can fill out the entire board, if wrong we need to change the number-> for this we require backtracking.
+
+Approach:
+1)call a recursive helper function which takes row number and column number.
+2)Check the posibility of each digit to place there starting from 1-9.
+3)if it is possible to place then place and return true and cal for the next empty cell
+4)if not possible then return false to backtrack
+5)if the row number reaches -> 9 that means the entire board is filled right.
+
+Complexity:
+Time complexity:
+O(9^x) where x=number of empty cells
+
+Space complexity:
+O(1)
+
+Code:
+class Solution {
+public:
+    bool isSafe(vector<vector<char>>& board, int row, int col, char dig){
+        //horizontal
+        for(int j=0; j<9; j++){
+            if(board[row][j]==dig){
+                return false;
+            }
+        }
+
+        //vertical
+        for(int i=0; i<9; i++){
+            if(board[i][col]==dig){
+                return false;
+            }
+        }
+
+        //grid
+        int startRow = (row/3)*3;
+        int startCol = (col/3)*3;
+        for(int i = startRow; i<=startRow+2; i++){
+            for(int j = startCol; j<=startCol+2; j++){
+                if(board[i][j]==dig){
+                    return false;
+                }
+            }
+        }
+
+        return true;
+
+    }
+    bool sudokuSolver(vector<vector<char>>& board, int row, int col){
+        if(row==9){
+            return true;
+        }
+        int nextRow=row;
+        int nextCol=col+1;
+        if(nextCol==9){
+            nextRow=row+1;
+            nextCol=0;
+        }
+        if(board[row][col]!='.'){
+           return sudokuSolver(board, nextRow, nextCol);
+        }
+        for(char dig='1'; dig<='9'; dig++){
+            if(isSafe(board, row, col, dig)){
+                board[row][col]=dig;
+                if(sudokuSolver(board,nextRow, nextCol)){
+                    return true;
+                }
+                board[row][col]='.';
+            }
+        }
+        return false;
+    }
+    void solveSudoku(vector<vector<char>>& board) {
+        sudokuSolver(board, 0, 0);
+    }
+};
