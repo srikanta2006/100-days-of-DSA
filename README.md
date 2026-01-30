@@ -1,6 +1,6 @@
 # DSA Using C++
 
-A comprehensive 36-day learning journey through Data Structures and Algorithms implemented in C++.
+A comprehensive 100-day learning journey through Data Structures and Algorithms implemented in C++.
 
 ## Project Overview
 
