@@ -1,6 +1,6 @@
 # 🚀 DSA Using C++
 
-**A structured 36-day journey to master Data Structures & Algorithms**
+**A structured 100-day journey to master Data Structures & Algorithms**
 
 ---
 
