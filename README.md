@@ -15,7 +15,7 @@
 | 📈 **Sorting** | 17-18 | Bubble, Insertion, Selection |
 | 🛠️ **STL & Strings** | 20-24 | Containers, palindromes, 2D arrays |
 | 🔄 **Recursion & Backtracking** | 28-34 | Recursion, subsets, maze solving |
-| ⚡ **Advanced Sorting** | 35-36 | Merge & Quick sort |
+| ⚡ **Advanced Sorting** | 35-37 | Merge, Quick sort, Count Inversions |
 
 ---
 
@@ -58,9 +58,10 @@
 - **DAY-31**: Print subsets (Backtracking)
 - **DAY-34**: Rat maze solver
 
-### Phase 8️⃣: Advanced Sorting (Days 35-36)
+### Phase 8️⃣: Advanced Sorting (Days 35-37)
 - **DAY-35**: Merge sort
 - **DAY-36**: Quick sort
+- **DAY-37**: Count Inversions (Divide & Conquer)
 
 ---
 
@@ -106,6 +107,7 @@ DSA-Using-Cpp/
 │   └── ...
 ├── DAY-35/          Merge sort
 ├── DAY-36/          Quick sort
+├── DAY-37/          Count Inversions
 └── README.md        This file
 ```
 
@@ -164,7 +166,7 @@ VS Code includes ready-to-use build tasks:
 
 ### Algorithms
 - **Searching**: Linear, Binary
-- **Sorting**: Bubble, Insertion, Selection, Merge, Quick
+- **Sorting**: Bubble, Insertion, Selection, Merge, Quick, Count Inversions
 - **Recursion**: Fibonacci, Factorial, Backtracking
 - **Number Theory**: GCD, Primes, Power
 
@@ -197,8 +199,8 @@ VS Code includes ready-to-use build tasks:
 ---
 
 **Language**: C++11 and later  
-**Duration**: 36 days  
-**Last Updated**: January 2026
+**Duration**: 37 days  
+**Last Updated**: February 2026
 
 ---
 
@@ -238,6 +240,7 @@ This project documents a structured approach to mastering DSA concepts through d
 - **DAY-34**: Backtracking applications (Rat maze)
 - **DAY-35**: Merge sort
 - **DAY-36**: Quick sort
+- **DAY-37**: Count Inversions (Divide & Conquer)
 
 ## Key Topics Covered
 
@@ -245,7 +248,7 @@ This project documents a structured approach to mastering DSA concepts through d
 - **Arrays & Vectors**: Operations, searching, manipulation
 - **Number Theory**: Prime generation, GCD, Power calculations
 - **Searching**: Linear search, Binary search (recursive & iterative)
-- **Sorting**: Bubble, Insertion, Selection, Merge, Quick sort, Partitioning
+- **Sorting**: Bubble, Insertion, Selection, Merge, Quick, Count Inversions, Partitioning
 - **Pointers & References**: Memory management, pointer arithmetic
 - **Data Structures**: Arrays, Vectors, Maps, Priority Queues
 - **Recursion**: Basic recursion, Fibonacci, Factorial
@@ -291,7 +294,7 @@ This project follows a progressive approach:
 6. **Data Structures** (Day 20): STL containers and usage
 7. **String & Math** (Days 21-24): String operations, GCD, 2D arrays
 8. **Recursion & Backtracking** (Days 28-34): Advanced problem-solving techniques
-9. **Advanced Sorting** (Days 35-36): Merge sort and Quick sort
+9. **Advanced Sorting** (Days 35-37): Merge sort, Quick sort, and Count Inversions
 
 ## Getting Started
 
@@ -317,8 +320,8 @@ The project includes build tasks for VS Code:
 
 ---
 
-**Duration**: 36 days of progressive DSA learning
+**Duration**: 37 days of progressive DSA learning
 
 **Language**: C++11 and later
 
-**Last Updated**: January 2026
+**Last Updated**: February 2026
