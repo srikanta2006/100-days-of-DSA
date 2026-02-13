@@ -16,6 +16,7 @@
 | 🛠️ **STL & Strings** | 20-24 | Containers, palindromes, 2D arrays |
 | 🔄 **Recursion & Backtracking** | 28-34 | Recursion, subsets, maze solving |
 | ⚡ **Advanced Sorting** | 35-37 | Merge, Quick sort, Count Inversions |
+| 🔗 **Linked Lists** | 38 | Singly Linked List Implementation |
 
 ---
 
@@ -62,6 +63,9 @@
 - **DAY-35**: Merge sort
 - **DAY-36**: Quick sort
 - **DAY-37**: Count Inversions (Divide & Conquer)
+
+### Phase 9️⃣: Linked Lists (Day 38)
+- **DAY-38**: Singly Linked List Implementation
 
 ---
 
@@ -199,7 +203,7 @@ VS Code includes ready-to-use build tasks:
 ---
 
 **Language**: C++11 and later  
-**Duration**: 37 days  
+**Duration**: 38 days  
 **Last Updated**: February 2026
 
 ---
@@ -241,6 +245,7 @@ This project documents a structured approach to mastering DSA concepts through d
 - **DAY-35**: Merge sort
 - **DAY-36**: Quick sort
 - **DAY-37**: Count Inversions (Divide & Conquer)
+- **DAY-38**: Singly Linked List Implementation
 
 ## Key Topics Covered
 
@@ -255,6 +260,7 @@ This project documents a structured approach to mastering DSA concepts through d
 - **Backtracking**: Subset generation, Rat maze
 - **String Algorithms**: Palindrome checking
 - **Advanced Binary Search**: Book allocation, Painter's partition, Aggressive cows
+- **Linked Lists**: Singly Linked List Implementation
 
 ## Prerequisites
 
@@ -295,6 +301,7 @@ This project follows a progressive approach:
 7. **String & Math** (Days 21-24): String operations, GCD, 2D arrays
 8. **Recursion & Backtracking** (Days 28-34): Advanced problem-solving techniques
 9. **Advanced Sorting** (Days 35-37): Merge sort, Quick sort, and Count Inversions
+10. **Linked Lists** (Day 38): Singly Linked List Implementation
 
 ## Getting Started
 
@@ -320,7 +327,7 @@ The project includes build tasks for VS Code:
 
 ---
 
-**Duration**: 37 days of progressive DSA learning
+**Duration**: 38 days of progressive DSA learning
 
 **Language**: C++11 and later
 
