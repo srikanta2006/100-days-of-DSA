@@ -1,6 +1,6 @@
 # 🚀 DSA Using C++
 
-**A structured 36-day journey to master Data Structures & Algorithms**
+**A structured 39-day journey to master Data Structures & Algorithms**
 
 ---
 
@@ -17,6 +17,7 @@
 | 🔄 **Recursion & Backtracking** | 28-34 | Recursion, subsets, maze solving |
 | ⚡ **Advanced Sorting** | 35-37 | Merge, Quick sort, Count Inversions |
 | 🔗 **Linked Lists** | 38 | Singly Linked List Implementation |
+| 🧠 **Practice** | 39 | LeetCode practice problems |
 
 ---
 
@@ -67,6 +68,9 @@
 ### Phase 9️⃣: Linked Lists (Day 38)
 - **DAY-38**: Singly Linked List Implementation
 
+### Phase 🔟: Practice (Day 39)
+- **DAY-39**: LeetCode practice problems
+
 ---
 
 ## 🛠️ Setup & Quick Start
@@ -112,6 +116,8 @@ DSA-Using-Cpp/
 ├── DAY-35/          Merge sort
 ├── DAY-36/          Quick sort
 ├── DAY-37/          Count Inversions
+├── DAY-38/          Singly linked list
+├── DAY-39/          LeetCode practice
 └── README.md        This file
 ```
 
