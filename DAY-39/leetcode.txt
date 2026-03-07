@@ -1,0 +1,165 @@
+[I]
+Question number: 876
+Title: Middle of Linked List
+description: 
+Given the head of a singly linked list, return the middle node of the linked list.
+If there are two middle nodes, return the second middle node.
+
+Intuition:
+-This problem can be solved by using a single pointer to traverse the entire linked list untill NULL to calculate the size.
+-Then traverse again untill [size/2 +1]th node to return it.
+-But this takes two traversals and can be avoided by optimizing the traversal.
+
+Approach:
+-We can use two pointers, one is slow (slow=slow->next) and the other is fast (fast=fast->next->next).
+-slow moves one step where as fast moves two steps for single iteration.
+-By this when the fast points to NULL(for size is Even) or last node(for Size is Odd) slow pointer will point the middle.
+-return it.
+
+Complexity:
+Time complexity:
+O(n)
+
+Space complexity:
+O(1)
+
+Code:
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* middleNode(ListNode* head) {
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while(fast!=NULL && fast->next != NULL){
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+        return slow;
+    }
+};
+--------------------------------------------------------------------------------------------
+[II]
+Question number: 206
+Title: Reverse a Linked List
+
+description: 
+Given the head of a singly linked list, reverse the list, and return the reversed list.
+
+Intuition
+-This problem can be solved by just reversing each link from left to right.
+-At each iteration we need to point the next pointer in the opposite direction.
+
+Approach
+-use Three pointers (prev, curr, next).
+-curr points towards the current node to change its next pointer.
+-prev points towards the previous node of current to add the link.
+-next points towards the next node of current to preserve its address while we break the link.
+
+Complexity
+O(n)
+
+Space complexity:
+O(1)
+
+Code:
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* curr =head;
+        ListNode* prev =NULL;
+        ListNode* next =NULL;
+        while(curr!=NULL){
+            next=curr->next;
+            curr->next=prev;
+            prev=curr;
+            curr=next;
+        }
+        return prev;
+    }
+};
+
+--------------------------------------------------------------------------------------------
+[III]
+Question number: 142
+Title: Linked list cycle-II (detect and return the link node)
+
+description: 
+Given the head of a linked list, return the node where the cycle begins. If there is no cycle, return null.
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. 
+Internally, pos is used to denote the index of the node that tail's next pointer is connected to (0-indexed). It is -1 if there is no cycle. Note that pos is not passed as a parameter.
+
+Intuition:
+-We can use slow and fast pointers to detect and return the cycle.
+-when slow pointer equals fast pointer it detects cycle
+
+Approach
+-first using while loop check whether cycle exists by checking (slow==fast).
+-If yes then take an other while loop where slow!=fast.
+-Make slow=head and maintain fast.
+-point where they both meet again is the cycle starting point.
+
+Complexity
+O(n)
+
+Space complexity:
+O(1)
+
+Code:
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        ListNode* slow=head;
+        ListNode* fast=head;
+        bool isCycle=false;
+        while(fast!=NULL && fast->next !=NULL){
+            slow=slow->next;
+            fast=fast->next->next;
+            if(slow==fast){
+                //cycle exists
+                isCycle=true;
+                break;
+            }    
+        }
+        if(isCycle){
+        slow=head;
+        while(slow!=fast){
+            slow=slow->next;
+            fast=fast->next;
+        }
+        return slow;
+        }
+        else{
+            return NULL;
+        }
+
+    }
+};
+
