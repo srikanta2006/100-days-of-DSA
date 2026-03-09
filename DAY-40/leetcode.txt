@@ -1,0 +1,47 @@
+[I]
+Question number: 21
+Title: Merge two sorted Lists
+description: 
+You are given the heads of two sorted linked lists list1 and list2.
+Merge the two lists into one sorted list. The list should be made by splicing together the nodes of the first two lists.
+Return the head of the merged linked list.
+
+Intuition:
+-This is a typical linked list problem of breaking and making of links.
+-we can divide the entire problem into small sub-problems.
+-each subproblem is to check the heads of each list(which is greater and which is smaller).
+-merge each node to their next smaller node and continue. 
+
+Approach:
+-As we identified it is a problem of smaller problems, we can use the recurrsion method.
+-if H1 is smaller then return h1->next as the next call and change the H1 to its next node maintaing the H2. 
+-This shows we are comparing the H1 next with the H2.
+-Continue this.
+
+Complexity:
+Time complexity:
+O(n+m)
+Where n and m are the size of each list.
+
+Space complexity:
+O(1)
+
+Code:
+
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* head1, ListNode* head2) {
+        if(head1 == NULL || head2 == NULL){
+        return head1 == NULL ? head2 : head1; //BASE CASE
+        }
+
+        if(head1->val <= head2->val){
+            head1->next = mergeTwoLists(head1->next, head2);
+            return head1;
+        }
+        else{
+            head2->next = mergeTwoLists(head1, head2->next);
+            return head2;
+        }
+        }
+};
