@@ -60,7 +60,7 @@ class DoublyList{
         }
 
         void pop_back(){
-             if(head==NULL){
+            if(head==NULL){
                 cout<<"DLL is empty"<<endl;
                 return;
             }
