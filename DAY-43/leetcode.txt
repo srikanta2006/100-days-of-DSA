@@ -1,0 +1,44 @@
+[I]
+Question number: 124
+Title: Maximum Path Sum in Binary Tree
+description: 
+A path in a binary tree is a sequence of nodes where each pair of adjacent nodes in the sequence has an edge connecting them. A node can only appear in the sequence at most once. Note that the path does not need to pass through the root.
+The path sum of a path is the sum of the node's values in the path.
+Given the root of a binary tree, return the maximum path sum of any non-empty path.
+
+Intuition:
+-we can find the path sum at each node using left+right+value at that node.
+To make this happen we can use recursion
+
+Approach:
+-The basic approach is to find the path sum of each side using recursion.
+but at each node we can choose two paths - left path or right
+to confirm it we use max function
+-if both are negative it should not affect the upper node sum so make it zero.
+Complexity:
+Time complexity:
+O(n)
+
+Space complexity:
+O(1)
+
+Code:
+class Solution {
+public:
+    int maxPathSum(TreeNode* root) {
+        int maxi=INT_MIN;
+        helper(root, maxi);
+        return maxi;
+
+    }
+    int helper(TreeNode* node, int& maxi){
+        if(node==NULL){
+            return 0;
+        }
+        int leftSum = max(0,helper(node->left, maxi));
+        int rightSum = max(0,helper(node->right, maxi));
+
+        maxi=max(maxi, leftSum+rightSum+node->val);
+        return node->val + max(leftSum, rightSum);
+    }
+};
