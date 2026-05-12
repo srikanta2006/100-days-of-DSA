@@ -1,0 +1,70 @@
+[I]
+Question number: 987
+Title: Vertical order traversal using level order method
+description: 
+Given the root of a binary tree, calculate the vertical order traversal of the binary tree.
+
+For each node at position (row, col), its left and right children will be at positions (row + 1, col - 1) and (row + 1, col + 1) respectively. The root of the tree is at (0, 0).
+
+The vertical order traversal of a binary tree is a list of top-to-bottom orderings for each column index starting from the leftmost column and ending on the rightmost column. There may be multiple nodes in the same row and same column. In such a case, sort these nodes by their values.
+
+Return the vertical order traversal of the binary tree.
+
+Intuition:
+Each node can be given (x,y) which depicts their postion wrt root element is (0,0).
+then for each of the column ...-2,-1,0,1,2... we should select all the nodes falling in the rows starting from 0----n rows
+
+Some rows may contain multiple nodes.
+accending order of thier values which requires a multiset(because values may repeat)
+finally we can use queue data structure to track the level order and assign values(x,y) to each node.
+
+Approach:
+-we will use "queue<pair<TreeNode*, pair<int, int>>>" to traverse which holds {node, {x,y}}.
+And for storing values for each column or vertical we use " map<int, map<int, multiset>>"
+
+Complexity:
+Time complexity:
+O(nlog(n))
+
+Space complexity:
+O(n)
+
+Code:
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        map<int, map<int, multiset<int>>> nodes;
+        queue<pair<TreeNode* , pair<int, int>>> todo;
+        todo.push({root,{0,0}});
+        while(!todo.empty()){
+            auto p = todo.front();
+            todo.pop();
+            TreeNode* node = p.first;
+            int x =p.second.first;
+            int y = p.second.second;
+            nodes[x][y].insert(node->val);
+            if(node->left) todo.push({node->left, {x-1, y+1}});
+            if(node->right) todo.push({node->right, {x+1, y+1}});
+        }
+        vector<vector<int>> ans;
+        for(auto p : nodes){
+            vector<int> col;
+            for(auto q : p.second){
+                col.insert(col.end(), q.second.begin(), q.second.end());
+            }
+            ans.push_back(col);
+        }
+        return ans;
+    }
+};
