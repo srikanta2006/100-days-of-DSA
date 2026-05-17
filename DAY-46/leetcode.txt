@@ -1,0 +1,95 @@
+[I]
+Question number: 101
+Title: Symmetric Tree
+description: 
+Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).
+
+Intuition:
+Symmetric binary tree refers to a tree with mirror in the exact middle of the tree. i.e. the left subtree can be super imposed on the right subtree.
+
+we can use pre-order on left side and reverse pre-order on the right side.
+
+Approach:
+-using recursive function call root->left and root->right.
+-if left->val != right->val return false
+-else continue to the next level by calling left then right on left side, but right then left on right side.
+-i.e. left- (root, left, right) and right -(root, right, left).
+Complexity:
+Time complexity:
+O(n)
+
+Space complexity:
+O(n)
+
+Code:
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+    bool helper(TreeNode* left,TreeNode* right){
+        if(left==NULL || right==NULL) return(left==right);
+        if(left->val != right->val) return false;
+        return helper(left->left, right->right) && helper(left->right, right->left);
+    }
+public:
+    bool isSymmetric(TreeNode* root) {
+        if(root==NULL) return true;
+        return helper(root->left, root->right);
+    }
+};
+
+[II]
+Question number: 236
+Title: Lowest common ansestor of a Binary Tree
+description: 
+Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.
+According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”
+Intuition:
+Instead of tracking full paths in arrays, we can use the tree's natural recursive structure to "bubble up" the answer. 
+We send scouts down the left and right subtrees. 
+If a node finds p on one side and q on the other, that node is the Lowest Common Ancestor.
+Approach:
+Base Case: If the current node is NULL, or if it matches p or q, immediately return the current node.
+
+Search: Recursively search the left subtree (lh) and right subtree (rh).
+
+The "Aha!" Moment (LCA Found): If both lh and rh return a valid node, p and q are split across the current node's children. Return root as the LCA.
+
+Pass-Through: If only one side returns a node (the other is NULL), return the non-NULL side to pass the found node up the chain.Complexity:
+
+Time complexity:
+O(n)
+
+Space complexity:
+O(n)
+
+Code:
+class Solution {
+    TreeNode* finder(TreeNode* root, TreeNode* p, TreeNode* q){
+        if(root== NULL || root==p || root==q){
+            return root;
+        }
+        TreeNode* lh = finder(root->left, p, q);
+        TreeNode* rh = finder(root->right, p, q);
+        if(lh==NULL){
+            return rh;
+        }
+        else if(rh==NULL){
+            return lh;   
+        }
+        return root;
+        }
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        TreeNode* ans= finder(root, p, q);
+        return ans;
+    }
+};
