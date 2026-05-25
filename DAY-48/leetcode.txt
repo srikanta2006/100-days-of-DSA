@@ -1,0 +1,101 @@
+[I] 863 : All nodes distance K in binary tree
+Given the root of a binary tree, the value of a target node target, and an integer k, return an array of the values of all nodes that have a distance k from the target node.
+You can return the answer in any order.
+
+Intuition:
+A binary tree normally allows movement only:
+parent → child
+But in this problem, from the target node we must move:
+left child
+right child
+parent
+So the tree effectively behaves like an undirected graph.
+
+Main Idea:
+We solve the problem in 2 steps:
+Step 1: Store Parent of Every Node
+A node already knows:
+left child
+right child
+But it does NOT know:
+its parent
+So first we traverse the tree and create:
+parent[child] = parentNode
+Now every node can move in 3 directions:
+left
+right
+parent
+This converts the tree into a graph.
+Step 2: BFS from Target
+Now start BFS from target.
+Why BFS?
+Because BFS naturally explores:
+distance 0
+distance 1
+distance 2
+...
+level by level.
+So when BFS reaches level k,
+all nodes currently in the queue are exactly k distance away.
+
+Without visited,
+we could loop forever:
+5 -> 3 -> 5 -> 3 ...
+So we mark visited nodes.
+
+class Solution {
+public:
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        if(k == 0) return {target->val};
+        queue<TreeNode*> q;
+        unordered_map<TreeNode*, TreeNode*> pMap; //{child -> parent}
+        q.push(root);
+        while(!q.empty()){
+            TreeNode* node = q.front();
+            q.pop();
+            if(node->left){
+                q.push(node->left);
+                pMap[node->left] = node;
+            }
+            if(node->right){
+                q.push(node->right);
+                pMap[node->right] = node;
+            }
+        }
+        int dist =0;
+        unordered_set<TreeNode*> visited;
+        q.push(target);
+        visited.insert(target);
+        while(!q.empty() && dist<k){
+            int size = q.size();
+            for(int i=0; i<size; i++){
+                TreeNode* node = q.front();
+                q.pop();
+            //top
+                if(pMap.count(node) && !visited.count(pMap[node])){
+                q.push(pMap[node]);
+                visited.insert(pMap[node]);
+                }
+            //left
+                if(node->left && !visited.count(node->left)){
+                q.push(node->left);
+                visited.insert(node->left);
+                }
+            //right
+                if(node->right && !visited.count(node->right)){
+                q.push(node->right);
+                visited.insert(node->right);
+                }
+            }
+          dist++;  
+        }
+        vector<int> ans;
+        while(!q.empty()){
+            TreeNode* node = q.front();
+            q.pop();
+            ans.push_back(node->val);
+        }
+
+        return ans;
+    }
+};
