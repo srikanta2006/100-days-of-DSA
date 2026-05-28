@@ -1,0 +1,99 @@
+[I]105: Construct Binary Tree from Preorder and Inorder Traversal
+
+Description: Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder is the inorder traversal of the same tree, construct and return the binary tree.
+
+Intuition: In a Preorder traversal (Root, Left, Right), the first element is always the root. In an Inorder traversal (Left, Root, Right), finding that root tells us exactly how many nodes belong to the left subtree and how many belong to the right subtree.
+
+Approach:The Hash Map: Build an unordered_map of the inorder array (value -> index) so we can find the root's position in $O(1)$ time instead of scanning for it.
+The Base Case: If our array pointers cross (preStart > preEnd or inStart > inEnd), return NULL.
+Find the Root: Create a new node using the first element of the current Preorder chunk (preorder[preStart]).
+The Split Math: Look up the root in the Hash Map to find its index (nodeIn). The number of nodes in the left subtree (nodesLeft) is simply nodeIn - inStart.
+Recurse: * Left Subtree: Start right after the root (preStart + 1), and take exactly nodesLeft elements.
+Right Subtree: Skip the root and the entire left subtree (preStart + nodesLeft + 1), and take the rest.
+
+Complexity:
+Time: O(N) — We visit every node exactly once to build the tree. The unordered_map ensures our root lookups take O(1) time.
+Space: O(N) — The hash map stores N elements, and the recursive call stack takes O(N) in the worst case (skewed tree).
+Code:
+class Solution {
+    TreeNode* helper(vector<int>& preorder, int preStart, int preEnd, 
+                     vector<int>& inorder, int inStart, int inEnd, 
+                     unordered_map<int, int>& inMap) {
+                         
+        if(preStart > preEnd || inStart > inEnd) return NULL;
+        
+        // 1. Create the root from the start of Preorder
+        TreeNode* root = new TreeNode(preorder[preStart]);
+        
+        // 2. Find the split point in Inorder
+        int inRoot = inMap[root->val];
+        int nodesLeft = inRoot - inStart;
+
+        // 3. Recurse Left and Right
+        root->left = helper(preorder, preStart + 1, preStart + nodesLeft, 
+                            inorder, inStart, inRoot - 1, inMap);
+                            
+        root->right = helper(preorder, preStart + nodesLeft + 1, preEnd, 
+                             inorder, inRoot + 1, inEnd, inMap);
+
+        return root;
+    }
+    
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        unordered_map<int, int> inMap;
+        int n = inorder.size();
+        
+        // Build O(1) lookup table
+        for(int i = 0; i < n; i++) {
+            inMap[inorder[i]] = i;
+        }
+        
+        return helper(preorder, 0, n - 1, inorder, 0, n - 1, inMap);
+    }
+};
+
+[II]889: Construct Binary Tree from Preorder and Postorder Traversal
+
+Description: Given two integer arrays preorder and postorder representing the respective traversals of a binary tree, reconstruct and return the tree.
+
+Intuition: * preorder[preStart] is always the current subtree's root.preorder[preStart + 1] represents the root of the left subtree.By finding where this left subtree root sits in the postorder array, we can calculate exactly how many nodes belong to the left subtree, allowing us to cleanly slice both arrays.
+
+Approach:The Hash Map: Map postorder values to their indices for $O(1)$ lookups.
+Base Cases: * If pointers cross (preStart > preEnd), return NULL.If it's a single node (preStart == preEnd), return it immediately to prevent checking a non-existent left child.
+The Split Math: Look up the value of the left boss (preorder[preStart + 1]) in the map to find its position (postNode). The size of the left subtree is leftCount = postNode - postStart + 1.
+Recurse: * Left Subtree: Take leftCount elements right after preStart.
+Right Subtree: Take the remaining elements, skipping the main root at postEnd by passing postEnd - 1.
+
+Complexity:
+Time Complexity: $O(N)$ — Every node is visited and constructed exactly once.
+Space Complexity: $O(N)$ — For the lookup map and the recursive call stack.
+
+code :
+class Solution {
+public:
+    TreeNode* helper(vector<int>& preorder, int preStart, int preEnd, vector<int>& postorder, int postStart, int postEnd, unordered_map<int, int>& postMap){
+        if(preStart> preEnd || postStart > postEnd){
+            return NULL;
+        }
+        TreeNode* node = new TreeNode(preorder[preStart]);
+        if(preStart==preEnd){
+            return node;
+        }
+        int postNode = postMap[preorder[preStart+1]];
+        int leftCount = postNode-postStart+1;
+        node->left = helper(preorder, preStart+1, preStart+leftCount, postorder, postStart, postNode, postMap);
+        node->right = helper(preorder,preStart+leftCount+1, preEnd, postorder,postNode+1, postEnd-1, postMap);
+        return node;
+    }
+    TreeNode* constructFromPrePost(vector<int>& preorder, vector<int>& postorder) {
+        unordered_map<int, int> postMap;
+        int n=postorder.size();
+        for(int i=0; i<n; i++){
+            postMap[postorder[i]]=i;
+        }
+        TreeNode* root = helper(preorder, 0, n-1, postorder, 0, n-1, postMap);
+
+        return root;
+    }
+};
