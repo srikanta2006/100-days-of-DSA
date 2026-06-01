@@ -4,7 +4,7 @@ Title: Contains Duplicate
 description: Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.
 
 Intuition:
-If we go with two loop method which is brute froce the time complexity becomes O(n^2).
+If we go with two loop method which is brute force the time complexity becomes O(n^2).
 But according to the constraints n<=10^5 we can only afford till O(nlogn).
 
 Approach:
