@@ -4,15 +4,15 @@ using namespace std;
 
 void selectionSort(vector<int>& arr){
     int n=arr.size();
-    for(int i=0; i<n-1; i++){
-        int smallest_index=i;
-        for(int j=i+1; j<n; j++){
-            if(arr[j]<arr[smallest_index]){
-                smallest_index=j;
-            }
+   for(int i=0; i<n; i++){
+    int smallest = i;
+    for(int j=i; j<n; j++){
+        if(arr[j]<arr[smallest]){
+            smallest = j;
         }
-        swap(arr[i], arr[smallest_index]);
     }
+    swap(arr[smallest], arr[i]);
+   }
 }
 
 

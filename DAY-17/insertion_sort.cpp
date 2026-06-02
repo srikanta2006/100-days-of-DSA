@@ -3,16 +3,15 @@
 using namespace std;
 
 void insertionSort(vector<int>& arr){
-    int n=arr.size();
+    int n = arr.size();
     for(int i=1; i<n; i++){
-        int curr=arr[i];
-        int prev=i-1;
-        while(prev>=0 && arr[prev]>curr){
-
-            arr[prev+1]=arr[prev];
-            prev--;
+        int key = arr[i]; // left most section of unsorted part
+        int j = i-1; //index of right most section of sorted part
+        while(j>=0 && key<arr[j]){
+            arr[j+1]=arr[j];
+            j--;
         }
-        arr[prev+1]=curr;
+        arr[j+1]=key;
     }
 }
 
