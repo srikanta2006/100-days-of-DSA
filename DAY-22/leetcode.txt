@@ -5,7 +5,7 @@ description: Given two strings s1 and s2, return true if s2 contains a permutati
 In other words, return true if one of s1's permutations is the substring of s2.
 
 Intuition:
-While the bruteforce approach for this problem might apear to be straight forward next perutation problem but that is very costly wrt time complexity.
+While the bruteforce approach for this problem might appear to be straight forward next perutation problem but that is very costly wrt time complexity.
 we need to sort the s1 string to start from first permutation and check for each permutation.
 But as we can see that in all the permutations the characters and thier frequencies remain the same.-> we can use this to solve the problem using sliding window.
 Approach:

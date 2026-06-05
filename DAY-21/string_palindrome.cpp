@@ -15,8 +15,5 @@ int main(){
     else{
         cout << "The given string is not a palindrome"<<endl;
     }
-
-
-
     return 0;
 }
