@@ -1,0 +1,33 @@
+[I] 114: Flatten Binary Tree to Linked List
+
+Description: Flatten a binary tree into a single right-leaning chain in-place, matching a Preorder Traversal (Root -> Left -> Right).
+
+Intuition: Going forward (Root -> Left -> Right) overwrites your right subtree before you can visit it. 
+Going completely backward using a Reverse Post-Order Traversal (Right -> Left -> Root) lets you build the tail of the chain first, safely modifying pointers without losing data.
+
+Approach:
+flatten(root->right): Dive to the absolute end of the list first.
+flatten(root->left): Process the left subtree backward.
+The Rewire:root->right = prev; (Attach the already-built tail to the right)root->left = NULL; (Cut the left connection)prev = root; (Move the tail pointer up to the current node)
+
+Complexity:
+Time: $O(N)$ — Every node is visited exactly once.
+Space: $O(H)$ — Stack space proportional to tree height ($O(N)$ in the worst case).
+
+code:
+
+class Solution {
+public:
+    TreeNode* prev = NULL;
+    void flatten(TreeNode* root) {
+        if(root==NULL){
+            return;
+        }
+        flatten(root->right);
+        flatten(root->left);
+
+        root->right = prev;
+        root->left = NULL;
+        prev = root;
+    }
+};
