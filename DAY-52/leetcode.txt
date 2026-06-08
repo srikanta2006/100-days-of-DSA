@@ -1,0 +1,24 @@
+[I] 701: Insert into a Binary Search Tree
+
+Description: Given the `root` of a binary search tree (BST) and a `value` to insert into the tree, return the root node of the BST after the insertion. It is guaranteed that the new value does not exist in the original BST.
+
+Intuition: Inserting a node is exactly like searching for a node. We traverse down the tree, making left/right decisions based on the BST property. The moment we try to step in a direction but find that the child is missing (`NULL`), we have found the exact spot where the new value belongs.
+
+Approach:
+
+1. The Edge Case: If the tree is entirely empty (root == NULL), simply create a new node and return it as the new root.
+2. The Search: Use a pointer to traverse the tree. Compare the insertion val with the current node's value.
+3. Look Before You Leap (Right): If val > root->val, we belong on the right.
+If root->right is NULL, attach the new node here and stop.
+Otherwise, step right (root = root->right).
+
+4. Look Before You Leap (Left): If val < root->val, we belong on the left.
+If root->left is NULL, attach the new node here and stop.
+Otherwise, step left (`root = root->left`).
+
+5. Return: The original root pointer remains unchanged and is returned at the end.
+
+Complexity:
+
+Time Complexity: O(H) — Where $H$ is the height of the tree. In a balanced BST, this is O(log N). In the worst-case (a completely skewed tree), it is O(N).
+Space Complexity: O(1) — This iterative approach uses no extra memory, avoiding the recursive call stack overhead.
