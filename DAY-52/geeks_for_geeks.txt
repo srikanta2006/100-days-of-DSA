@@ -1,0 +1,55 @@
+[I]Find Ceil in a BST
+
+Intuition: Use binary search logic. If a node is $\ge x$, it's a valid ceiling, but a "tighter" (smaller) one might be hiding to its left. If a node is $< x$, it's too small, so you must look right.
+
+Approach:
+
+Track Best: Set `ans = -1`.
+Match (`== x`): Perfect ceiling found. Return it instantly.
+Valid Candidate (`> x`): Save it (`ans = root->data`), then step **left** to hunt for an even smaller ceiling.
+Too Small (`< x`): Ignore it and step **right** to find bigger numbers.
+
+Complexity:
+
+Time: O(H) — Where H is the tree height. (O(log N) average, O(N) worst-case).
+Space: O(1) — Operates entirely in-place with a while loop.
+
+code:
+
+class Solution {
+  public:
+    int findCeil(Node* root, int x) {
+        int ans = -1;
+        
+        while(root != NULL){
+            if(root->data == x){
+                ans = root->data;
+                return ans;
+            }
+            if(root->data > x){
+                ans = root->data;
+                root = root->left;
+            }
+            else{
+                root = root->right;
+            }
+        }
+        return ans;
+    }
+};
+
+[II] Find Floor in a BST
+
+Intuition:Use binary search logic. If a node is less than k, it's a valid floor, but a tighter (larger) one might be hiding to its right. If a node is > k, it is too big, so you must look left.
+
+Approach:
+
+Track Best: Set ans = -1.
+Match (`== k`): Perfect floor found. Return it instantly.
+Valid Candidate (`< k`): Save it (`ans = root->data`), then step right to hunt for an even larger floor that is still less than k.
+Too Big (`> k`): Ignore it and step left to find smaller numbers.
+
+Complexity:
+
+Time: O(H) — Where H is the tree height. (O(\log N) average, O(N) worst-case).
+Space: O(1) — Operates entirely in-place with a while loop.
