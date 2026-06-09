@@ -1,0 +1,157 @@
+450: Delete Node in a BST
+
+Description: Given a root node reference of a BST and a `key`, delete the node with the given key in the BST. Return the root node reference (possibly updated) of the BST.
+
+Intuition: Deleting a node with zero or one child is easy—you just bypass it. But deleting a node with two children requires surgery. Everything in the deleted node's right subtree is strictly greater than everything in its left subtree. Therefore, the safest place to attach the orphaned right subtree is to the absolute largest value of the left subtree (the bottom-right-most node). Once attached, you can safely promote the left child to take the deleted node's place.
+
+Approach:
+
+1. The Edge Cases:** If the tree is empty, return `NULL`. If the main `root` itself holds the target key, pass it directly to your `helper` and return the result.
+2. The Iterative Search:** Traverse the tree using a `while` loop. Look *ahead* at `root->left` and `root->right` to find the target. This ensures we keep a reference to the **parent**, allowing us to easily overwrite the parent's pointer once the child is deleted.
+3. The Surgery (`helper` function):
+If the node has no left child, simply return its right child.
+If the node has no right child, simply return its left child.
+If it has both: Traverse down the right side of the left subtree to find the `lastNode` (the largest value on the left). Connect the orphaned right subtree to `lastNode->right`. Finally, return the left child to act as the new head of this branch.
+
+
+
+Complexity:
+
+Time Complexity: $\mathcal{O}(H)$ — Where $H$ is the height of the tree. We take $\mathcal{O}(H)$ time to find the node, and at most another $\mathcal{O}(H)$ time inside the helper to find the rightmost node. Overall time remains $\mathcal{O}(H)$.
+Space Complexity: $\mathcal{O}(1)$ — Operates completely in-place without utilizing the recursive call stack.
+
+Code:
+
+
+class Solution {
+public:
+    TreeNode* findRight(TreeNode* node){
+        while(node->right != NULL){
+            node = node->right;
+        }
+        return node;
+    }
+
+    TreeNode* helper(TreeNode* node){
+        TreeNode* root = node;
+        // Case 1 & 2: 0 or 1 child
+        if(node->left == NULL) return node->right;
+        if(root->right == NULL) return node->left;
+        
+        // Case 3: 2 children surgery
+        TreeNode* rightNode = node->right;
+        TreeNode* lastNode = findRight(node->left);
+        lastNode->right = rightNode;
+
+        return root->left; // Return the new head of the merged subtree
+    }
+
+    TreeNode* deleteNode(TreeNode* root, int key) {
+        if(root == NULL) return NULL;
+        
+        // Edge case: target is the root itself
+        if(root->val == key) return helper(root);
+        
+        TreeNode* temp = root;
+        while(root != NULL){
+            if(root->val > key){
+                if(root->left != NULL && root->left->val == key){
+                    root->left = helper(root->left); // Rewire parent's left
+                    break;
+                } else {
+                    root = root->left;
+                }
+            } else {
+                if(root->right != NULL && root->right->val == key){
+                    root->right = helper(root->right); // Rewire parent's right
+                    break;
+                } else {
+                    root = root->right;
+                }
+            }
+        }
+        return temp; // Return the original, un-deleted root
+    }
+};
+
+
+[II] 230:  Kth Smallest Element in a BST
+
+Description
+Given the root of a binary search tree, and an integer k, return the kth smallest value of all the values of the nodes in the tree.
+
+Intuition
+The defining property of a Binary Search Tree is that an In Order Traversal (Left, Node, Right) will always visit the nodes in strictly ascending, sorted order. Therefore, to find the kth smallest element, we just need to do a standard In Order traversal and stop exactly when we have visited k nodes.
+
+Approach
+
+1. The State Trackers: Use two pass-by-reference variables (count and ans) to maintain state across all recursive frames.
+2. The Early Exit: At the top of the recursive function, check if the node is empty or if count is greater than or equal to k. If count has already reached k, the answer is found, and we instantly kill any further traversal to save time.
+3. The In-Order Traversal: Traverse Left. Then process the node by incrementing count. If count equals k, save the node's value to ans and return. Finally, traverse Right.
+
+Complexity
+Time Complexity: O(H + k). We traverse down to the leftmost leaf, taking O(H) time where H is the tree height. Then we process exactly k nodes. The early exit prevents traversing the entire tree.
+Space Complexity: O(H). The maximum depth of the recursive call stack is the height of the tree.
+
+code:
+class Solution {
+public:
+    void helper(TreeNode* node, int k, int& count, int& ans){
+        if(node==NULL || count >= k){
+            return;
+        }
+        helper(node->left, k, count, ans);
+        count++;
+        if(count == k){
+            ans=node->val;
+            return; 
+        }
+        helper(node->right, k, count, ans);
+    }
+    int kthSmallest(TreeNode* root, int k) {
+        int count=0;
+        int ans = -1;
+        helper(root, k, count, ans);
+
+        return ans;
+    }
+};
+
+[III] 98 Validate Binary Search Tree
+
+Description
+Given the root of a binary tree, determine if it is a valid binary search tree. A valid binary search tree dictates that the left subtree of a node contains only nodes with keys strictly less than the nodes key, and the right subtree contains only nodes with keys strictly greater than the nodes key. Both left and right subtrees must also be valid binary search trees.
+
+Intuition
+A node is not just accountable to its immediate parent; it must obey the rules of every ancestor above it. Checking only immediate children fails because a right child could have a left descendant that is smaller than the grandparent. To enforce the global rules, we pass down a strict valid range, containing a minimum and maximum boundary, as we traverse down the tree. When stepping left, the maximum boundary tightens. When stepping right, the minimum boundary tightens.
+
+Approach
+
+1. The Initial Boundaries: We start by passing the absolute minimum and maximum 64-bit integer limits, LLONG_MIN and LLONG_MAX, into our recursive helper function. This guarantees the code will not fail or crash when a node exactly equals a 32-bit INT_MAX or INT_MIN.
+2. The Base Case: If the current node is empty, we return true because an empty tree is inherently a valid binary search tree.
+3. The Boundary Check: If the current nodes value is less than or equal to the minimum boundary, or greater than or equal to the maximum boundary, the tree violates the rules and we instantly return false.
+4. The Recursive Propagation: We recursively call the helper function on the left child, replacing the maximum boundary with the current nodes value. We also call it on the right child, replacing the minimum boundary with the current nodes value. Both sides must evaluate to true for the entire tree to be considered valid.
+
+Complexity
+Time Complexity: O(N). We visit every single node in the tree exactly once to verify its value against its specific boundaries.
+Space Complexity: O(H). The maximum space used by the recursive call stack is determined by the height of the tree. In the worst case of a completely completely skewed tree, this is O(N), and for a perfectly balanced tree, it is O(log N).
+
+code:
+
+class Solution {
+public:
+    bool helper(TreeNode* root, long long start, long long end){
+        if(root == NULL){
+            return true;
+        }
+        if(start >= root->val || end <= root->val){
+            return false;
+        }
+        return helper(root->left, start, root->val) && helper(root->right, root->val, end);
+    }
+    bool isValidBST(TreeNode* root) {
+        long long start = LLONG_MIN;
+        long long end = LLONG_MAX;
+        return helper(root, start, end);
+    }
+};
