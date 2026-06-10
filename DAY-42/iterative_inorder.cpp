@@ -7,10 +7,20 @@ struct TreeNode {
     int data;
     TreeNode* left;
     TreeNode* right;
+    TreeNode(){
+        data=0;
+        left=NULL;
+        right=NULL;
+    }
     TreeNode(int val){
         data=val;
         left=NULL;
         right=NULL;
+    }
+    TreeNode(int val, TreeNode* left, TreeNode* right){
+        data=val;
+        left=left;
+        right=right;
     }
 };
 
