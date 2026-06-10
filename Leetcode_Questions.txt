@@ -1,0 +1,40 @@
+Day | Number | Title
+--------------------------------------------------
+DAY-05 | 136 | Single number
+DAY-06 | 53 | maximum subarray
+DAY-06 | 169 | majority element
+DAY-07 | 50 | Pow(x,n)
+DAY-07 | 268 | Missing number
+DAY-08 | 121 | Best Time to Buy and Sell Stock
+DAY-08 | 11 | Container with most water
+DAY-09 | 238 | Product of Array Except Self
+DAY-10 | 217 | Contains Duplicate
+DAY-10 | 283 | Move Zeros
+DAY-12 | 33 | Search in Rotated Sorted Array
+DAY-13 | 852 | Peak index in mountain array
+DAY-18 | 75 | sort colors
+DAY-19 | 88 | Merge sorted arrays
+DAY-19 | 31 | Next permutation
+DAY-22 | 567 | Permutations in string
+DAY-23 | 204 | count primes
+DAY-25 | 240 | Search a 2D Matrix II
+DAY-26 | 1 | Two sum
+DAY-27 | 560 | Subarray Sum Equals K
+DAY-32 | 90 | subsets II
+DAY-33 | 37 | Sudoku Solver
+DAY-39 | 876 | Middle of Linked List
+DAY-39 | 206 | Reverse a Linked List
+DAY-39 | 142 | Linked list cycle-II (detect and return the link node)
+DAY-40 | 21 | Merge two sorted Lists
+DAY-43 | 124 | Maximum Path Sum in Binary Tree
+DAY-44 | 987 | Vertical order traversal using level order method
+DAY-46 | 101 | Symmetric Tree
+DAY-46 | 236 | Lowest common ansestor of a Binary Tree
+DAY-48 | 863 | All nodes distance K in binary tree
+DAY-49 | 105 | Construct Binary Tree from Preorder and Inorder Traversal
+DAY-49 | 889 | Construct Binary Tree from Preorder and Postorder Traversal
+DAY-50 | 297 | Serialize and Deserialize Binary Tree
+DAY-51 | 114 | Flatten Binary Tree to Linked List
+DAY-52 | 701 | Insert into a Binary Search Tree
+DAY-53 | 450 | Delete Node in a BST
+DAY-53 | 230 | Kth Smallest Element in a BST
