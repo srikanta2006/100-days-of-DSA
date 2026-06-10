@@ -1,4 +1,4 @@
-﻿# 🚀 DSA Using C++
+# 🚀 DSA Using C++
 
 **A structured daily journey to master Data Structures & Algorithms in C++.**
 
@@ -30,6 +30,8 @@ DSA-Using-Cpp/
 ├── DAY-02/
 ├── ...
 ├── DAY-41/
+├── ...
+├── DAY-53/
 └── README.md
 ```
 
@@ -72,8 +74,12 @@ g++ -o quickSort quickSort.cpp
 - **DAY-28..34**: Recursion and backtracking
 - **DAY-35..37**: Merge sort, quick sort, count inversions
 - **DAY-38**: Singly linked list
-- **DAY-39+**: LeetCode practice
+- **DAY-39..40**: LeetCode practice
 - **DAY-41**: Doubly linked list
+- **DAY-42**: Binary Tree Traversals (Iterative & Level Order)
+- **DAY-43..50**: Binary Tree problems & LeetCode practice
+- **DAY-51**: Morris Traversal
+- **DAY-52..53**: Practice & LeetCode challenges
 
 ---
 
