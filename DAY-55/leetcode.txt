@@ -1,0 +1,52 @@
+[I] 173: Binary Search Tree Iterator
+
+Description
+Implement a class that iterates over the in order traversal of a BST. The next method returns the next smallest number, and hasNext returns true if a next number exists.
+
+Intuition
+An in order traversal visits nodes in ascending order. Instead of flattening the whole tree and wasting memory, we use a custom stack to pause and resume the traversal dynamically.
+
+Approach
+
+The Stack: Use a stack to track the path from the root to the current leftmost node.
+
+Initialization: Push the root and all its left children onto the stack. The absolute smallest element is now at the top.
+
+hasNext: Return true if the stack is not empty.
+
+next: Pop the top element to return as the answer. If this popped node has a right child, step right, then push that node and all its left children onto the stack to prepare for future calls.
+
+Complexity
+Time Complexity: hasNext is O(1). next is amortized O(1) because every node in the tree is pushed and popped exactly once overall.
+Space Complexity: O(H) where H is the tree height. The stack only holds nodes along a single vertical path.
+
+code:
+
+class BSTIterator {
+public:
+    stack<TreeNode*> st;
+    BSTIterator(TreeNode* root) {
+        while(root!=NULL){
+            st.push(root);
+            root=root->left;
+        }
+    }
+    
+    int next(){
+        TreeNode* node = st.top();
+        int ans = node->val;
+        st.pop();
+        if(node->right != NULL){
+            node=node->right;
+            while(node!=NULL){
+                st.push(node);
+                node=node->left;
+            }
+        }
+        return ans;
+    }
+    
+    bool hasNext() {
+        return !st.empty();
+    }
+};
