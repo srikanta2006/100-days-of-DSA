@@ -1,0 +1,40 @@
+[I] Inorder Successor in BST
+
+Description: Given a BST, and a reference to a Node k in the BST. 
+Find the Inorder Successor of the given node in the BST. 
+If there is no successor, return -1. 
+
+Intuition: We can solve this by BF the most simple method. Find the Inorder, store it in a vector, find the K value, return the next.
+But this method takes TC-O(N) SC-O(N). As it is a BST we can solve it by using the property of left subtree lesser and right subtree greater.
+
+Approach : 
+create an answer variable and assign it value -1
+Then start from root -> 3 conditions
+1) root->val < k->val : just move root to the right;
+2) root->val > k->val : As this value can be the answer store and search for smaller value than this but greater than k->val.(root=root->left)
+3) root->val == k->val : search for number greater than this so move right. (root = root->right)
+
+complexity:
+TC: O(H) where h is the height of the tree.  Worst case height = nodes (skew tree). O(N)
+SC: O(1) no extra auxilary space required. just the output.
+
+code:
+class Solution {
+  public:
+    int inOrderSuccessor(Node *root, Node *k) {
+        int ans = -1;
+        while(root!=NULL){
+            if(root->data < k->data){
+                root=root->right;
+            }
+            else if(root->data > k->data){
+                ans = root->data;
+                root = root->left;
+            }
+            else{
+                root = root->right;
+            }
+        }
+        return ans;
+    }
+};
