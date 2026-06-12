@@ -1,0 +1,140 @@
+[II]653: Two Sum IV Input is a BST
+
+Description
+Given the root of a binary search tree and an integer k, return true if two elements in the BST sum to k.
+
+Intuition
+A BST naturally holds sorted data. We can treat it like a sorted array and use the classic two pointer approach. Instead of wasting memory by flattening the entire tree into an array, we use two dynamic iterators to step inward from the smallest and largest ends on demand.
+
+Approach
+
+1. The Iterators: Create a forward iterator to yield elements in ascending order, and a backward iterator to yield elements in descending order.
+2. The Setup: Pull the absolute smallest element using the forward iterator and the absolute largest element using the backward iterator.
+3. The Search: While the small value is less than the large value, check their sum. If it equals k, return true. If the sum is too small, advance the forward iterator. If the sum is too large, advance the backward iterator.
+
+Complexity
+Time Complexity: O(N). The iterators push and pop each node at most once, so advancing the pointers takes an amortized constant time.
+Space Complexity: O(H). Both iterators only store the vertical path of nodes matching the tree height, keeping memory usage strictly to the height of the tree rather than the total number of nodes.
+
+code:
+
+class Solution {
+public:
+    stack<TreeNode*> start;
+    stack<TreeNode*> end;
+    int next(){
+        TreeNode* node = start.top();
+        start.pop();
+        int ans = node->val;
+        if(node->right !=NULL){
+            node=node->right;
+            while(node!=NULL){
+                start.push(node);
+                node=node->left;
+            }
+        }
+        return ans;
+    }
+
+    int before(){
+        TreeNode* node = end.top();
+        end.pop();
+        int ans = node->val;
+        if(node->left !=NULL){
+            node=node->left;
+            while(node!=NULL){
+                end.push(node);
+                node=node->right;
+            }
+        }
+        return ans;
+    }
+
+    bool findTarget(TreeNode* root, int k) {
+        TreeNode* temp = root;
+        while(temp!=NULL){
+            start.push(temp);
+            temp=temp->left;
+        }
+        temp = root;
+        while(temp!=NULL){
+            end.push(temp);
+            temp=temp->right;
+        }
+        int small = next();
+        int large = before();
+        while(small<large){
+
+            if(small+large == k){
+            return true;
+            }
+            if(small+large < k){
+                small = next();
+            }
+            else{
+                large = before();
+            }
+        }
+        return false;
+    }
+};
+
+[II]99: Recover Binary Search Tree
+
+Description
+Given the root of a binary search tree where exactly two nodes were swapped by mistake, recover the tree without changing its structure.
+
+Intuition
+An in order traversal of a valid binary search tree always yields strictly increasing values. If two nodes are swapped, this sorted order will be disrupted, creating either one or two dips where a current node is smaller than the previous one. By tracking these anomalies during the traversal, we can identify exactly which two nodes are out of place and swap their values back.
+
+Approach
+
+1. The Trackers: We initialize global class pointers to keep track of the first, middle, last, and previous nodes during our traversal.
+2. The Traversal: We perform a standard in order traversal, going left, processing the node, and then going right.
+3. Finding the Dips: During processing, we compare the current node to the previous node. If the current value is less than the previous value, we found a violation. If it is the first violation we have seen, we save the previous node as first and the current node as middle. If we encounter a second violation later in the tree, we save the current node as last.
+4. The Fix: Once the traversal is complete, we check our trackers. If last is not empty, it means the swapped nodes were far apart, so we swap the values of the first and last nodes. If last is empty, it means the swapped nodes were adjacent, so we swap the values of the first and middle nodes.
+
+Complexity
+Time Complexity: $O(N)$ because we potentially visit every node in the tree once to find the swapped elements.
+Space Complexity: $O(H)$ where $H$ is the height of the tree, representing the maximum memory used by the recursive call stack.
+
+code:
+
+class Solution {
+public:
+    TreeNode* first;
+    TreeNode* mid;
+    TreeNode* prev;
+    TreeNode* last;
+    void helper(TreeNode* node){
+        if(node == NULL){
+            return;
+        }
+        helper(node->left);
+        if(prev!= NULL && node->val < prev->val ){
+            if(first==NULL){
+                first = prev;
+                mid = node;
+            }
+            else{
+                last = node;
+                return;
+            }
+        }
+        prev = node;
+        helper(node->right);
+    }
+    void recoverTree(TreeNode* root) {
+        first = NULL;
+        mid = NULL;
+        last = NULL;
+        prev = NULL;
+        helper(root);
+        if(last!=NULL){
+            swap(first->val, last->val);
+        }
+        else{
+            swap(first->val, mid->val);
+        }
+    }
+};
