@@ -38,3 +38,8 @@ DAY-51 | 114 | Flatten Binary Tree to Linked List
 DAY-52 | 701 | Insert into a Binary Search Tree
 DAY-53 | 450 | Delete Node in a BST
 DAY-53 | 230 | Kth Smallest Element in a BST
+DAY-53 | 98 | Validate Binary Search Tree
+DAY-54 | 235 | Lowest common ancestor of a Binary search Tree
+DAY-55 | 173 | Binary Search Tree Iterator
+DAY-56 | 653 | Two Sum IV Input is a BST
+DAY-56 | 99 | Recover Binary Search Tree

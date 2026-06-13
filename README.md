@@ -16,13 +16,13 @@ This repository contains day-by-day C++ implementations and practice problems fo
 - **Sorting**: Bubble, insertion, selection, merge, quick sort, inversion count
 - **Data Structures**: Vectors, maps, pairs, priority queues, linked list
 - **Recursion & Backtracking**: Fibonacci, factorial, subsets, rat maze
-- **Problem Practice**: LeetCode-style challenges in `leetcode.txt`
+- **Problem Practice**: LeetCode and GeeksforGeeks challenges documented in `leetcode.txt` and `geeks_for_geeks.txt`, with summaries in `Leetcode_Questions.txt` and `geeks_for_geeks.txt` in the root.
 
 ---
 
 ## 🗂️ Structure
 
-Each day has a folder with `*.cpp` code and optional `leetcode.txt` exercises.
+Each day has a folder with `*.cpp` code and optional `leetcode.txt` or `geeks_for_geeks.txt` exercises.
 
 ```
 DSA-Using-Cpp/
@@ -95,7 +95,7 @@ g++ -o quickSort quickSort.cpp
 ## 📌 Notes
 
 - Use each folder as a standalone exercise.
-- `leetcode.txt` files contain recommended practice problems.
+- `leetcode.txt` and `geeks_for_geeks.txt` files contain recommended practice problems.
 - This repo is meant for learning, implementation, and quick reference.
 
 *Happy coding!* 🎉
