@@ -1,0 +1,52 @@
+[I] 333 Largest BST 
+
+Description
+Given the root of a binary tree, find the largest subtree that is also a valid Binary Search Tree and return its size.
+
+Intuition
+A parent can only verify it is a valid BST after checking its children. By using a bottom up post order traversal, children evaluate themselves first and pass their results up, allowing us to process the entire tree in one pass without redundant checks.
+
+Approach
+
+1. The Package: Create a custom object to return the minimum value, maximum value, and largest valid BST size from every subtree.
+2. The Base Case: For empty null nodes, return a minimum of positive infinity and a maximum of negative infinity. This math trick ensures parent leaf nodes always pass the validity check.
+3. The Traversal: Recursively dive all the way down to the left and right children first before processing the current node.
+4. The Validation: If the current node is strictly greater than the left maximum and strictly less than the right minimum, it forms a valid BST. Return a new package with updated boundaries and the combined size plus one.
+5. The Failure: If the node breaks BST rules, return positive infinity for the maximum and negative infinity for the minimum to act as a poison pill. This guarantees all ancestors will also fail the check, but we continue passing up the highest size score found so far.
+
+Complexity
+Time Complexity: O(N) since every node is visited exactly once in a single bottom up pass.
+Space Complexity: O(H) representing the maximum memory used by the recursive call stack, where H is the height of the tree.
+
+code:
+class NodeValue {
+    public:
+    int minNode, maxNode, maxSize;
+    
+    NodeValue(int minNode, int maxNode, int maxSize){
+        this->minNode = minNode;
+        this->maxNode = maxNode;
+        this->maxSize = maxSize;
+    }
+};
+
+class Solution {
+  private:
+  NodeValue helper(Node* root){
+      if(root == NULL){
+          return NodeValue(INT_MAX, INT_MIN, 0);
+      }
+      auto left = helper(root->left);
+      auto right = helper(root->right);
+      
+      if(left.maxNode < root->data && root->data < right.minNode){ //VALID BST
+          return NodeValue(min(left.minNode, root->data), max(right.maxNode, root->data), left.maxSize + right.maxSize + 1);
+      }
+      return NodeValue(INT_MIN, INT_MAX, max(left.maxSize, right.maxSize));
+  }
+  
+  public:
+    int largestBst(Node *root) {
+        return helper(root).maxSize;
+    }
+};
