@@ -1,0 +1,67 @@
+[I] 3612: String Processor (Backspace, Double, Reverse)
+
+Description: 
+
+Given an input string s containing regular characters and special command characters, process the string to build a final answer.
+
+* : Delete the last character of the answer string.
+
+# : Duplicate the current answer string (append it to itself).
+
+% : Reverse the current answer string.
+
+Any other character : Append it to the answer string.
+
+Approach: 
+
+Instead of trying to split the string into words, we treat the input as an array of characters. We initialize an empty answer string and use a for loop to evaluate the input character-by-character. Based on the character, we perform the requested $O(1)$ or $O(N)$ string operation directly on our answer variable.
+
+
+class Solution {
+public:
+    string processStr(string s) {
+        string ans;
+        
+        // Read character-by-character
+        for (char c : s) {
+            if (c == '*') {
+                // Safety check to prevent crashing on an empty string
+                if (!ans.empty()) {
+                    ans.pop_back();
+                }
+            } 
+            else if (c == '#') {
+                ans += ans; // Equivalent to ans.append(ans)
+            } 
+            else if (c == '%') {
+                reverse(ans.begin(), ans.end());
+            } 
+            else {
+                ans.push_back(c);
+            }
+        }
+        
+        return ans;
+    }
+};
+
+
+🚨 Key Mistakes to Avoid in the Future
+
+1. The Greedy stringstream Trap
+
+The Mistake: Using while(getline(ss, str)) to read a continuous string.
+Why to avoid it: getline looks for a newline (\n). If your input string doesn't have spaces or newlines (e.g., "ab*c#"), stringstream will swallow the entire word in one massive chunk. Your code will then try to compare "ab*c#" to "*" and fail.
+The Rule: If you are processing a continuous block of text without spaces, abandon streams and use a standard for (char c : s) loop.
+
+2. Comparing Strings vs. Characters
+
+The Mistake: Writing if (str == "*") when checking single letters.
+Why to avoid it: In C++, double quotes "" represent a String (an array of characters ending in a null terminator). Single quotes '' represent a primitive char. Comparing a string variable to a char will cause compilation errors, and creating strings just to hold a single character wastes memory.
+The Rule: When looping through a string, use char and single quotes: if (c == '*').
+
+3. Blindly Deleting Memory
+
+The Mistake: Calling ans.pop_back() without checking the size first.
+Why to avoid it: If the input string starts with * (e.g., "abc"), the answer string is currently empty. Telling C++ to delete the last element of an empty array will cause an immediate Segmentation Fault (crash).
+The Rule: Always wrap deletions in a safety check: if (!ans.empty()).
