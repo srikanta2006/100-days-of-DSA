@@ -1,0 +1,41 @@
+[I] 994: Rotting Oranges (Graph Multi-Source BFS)
+
+Description:
+
+You are given an m x n grid where each cell can have one of three values:
+
+0: An empty cell.
+
+1: A fresh orange.
+
+2: A rotten orange.
+
+Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten. Return the minimum number of minutes that must elapse until no cell has a fresh orange. If this is impossible (because a fresh orange is trapped behind empty cells), return -1.
+
+Core Concepts Used:
+
+Multi-Source BFS: Unlike a standard BFS that starts from a single node, this problem requires multiple starting points. You must scan the grid at Minute 0 and push all initially rotting oranges into the queue before the while loop starts.
+
+Level-Order Traversal (Time Tracking): By storing the time inside the queue alongside the coordinates ({{r, c}, time}), the algorithm naturally processes the spread minute-by-minute, guaranteeing that the final recorded time is the shortest possible path.
+
+In-Place State Management ($O(1)$ Space Optimization): Instead of allocating a massive $O(N \times M)$ vis array, you can use the input grid itself to track visited states by permanently overwriting fresh oranges (1) to rotten (2) as they are claimed.
+
+🚨 Key Mistakes to Avoid in the Future:
+
+1. The Queue Multiplication Trap (TLE)
+
+The Mistake: Waiting to mark a fresh orange as "visited" until after you pop it out of the queue.
+Why to avoid it: If an unvisited fresh orange is surrounded by four rotting oranges, all four will check their neighbors, see the orange is unvisited, and push it into the queue. That one orange is now processed four separate times, causing exponential queue growth and a Time Limit Exceeded (TLE) crash.
+The Rule: You must "claim" the node the exact millisecond you push it into the queue (e.g., vis[nrow][ncol] = 2; inside the neighbor-checking if statement).
+
+2. Uninitialized 2D Vector Dimensions (Seg Fault)
+
+The Mistake: Declaring vector<vector<int>> vis; and immediately trying to access vis[i][j].
+Why to avoid it: C++ vectors start with a size of 0. Trying to access an index that hasn't been allocated in memory causes an immediate Segmentation Fault.
+The Rule: Always initialize a 2D vector with its explicit dimensions: vector<vector<int>> vis(n, vector<int>(m, 0));.
+
+3. Incomplete Boundary Checks
+
+The Mistake: Writing incomplete logic in the massive boundary check, such as if (nrow >= && ...)
+Why to avoid it: Missing a 0 or mixing up < n with < m will either cause a compilation error or cause the search to bleed off the edges of the grid into restricted memory.
+The Rule: Always read the four boundary checks out loud: "Row greater than zero, row less than N. Col greater than zero, col less than M."
