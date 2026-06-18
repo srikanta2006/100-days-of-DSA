@@ -1,0 +1,98 @@
+Detect Cycle in an Undirected Graph (BFS)
+
+Description
+
+Given an undirected graph with V vertices and E edges, determine if the graph contains a cycle. A cycle exists if there is a path of length greater than 2 that starts and ends at the same vertex. The graph may not be fully connected (it can contain disconnected islands).
+
+Approach
+
+We use Breadth-First Search (BFS) while keeping track of the "parent" node (the node we just came from).
+As we explore a node's neighbors:
+
+If a neighbor is unvisited, we mark it as visited, push it to the queue, and record the current node as its parent.
+
+If a neighbor is already visited, we check if it is the parent. If it is not the parent, it means another path has already reached this neighbor. We have found a cross-edge, which means a cycle exists.
+
+To handle disconnected graphs, we must wrap the BFS inside a loop that checks every single vertex from 0 to V-1.
+
+C++ Solution ($O(V + E)$ Time and Space)
+
+class Solution {
+  private:
+    bool detect(int src, vector<vector<int>>& adj, vector<bool>& vis){
+        vis[src] = true;
+        queue<pair<int, int>> q;
+        
+        // Push the source node and a dummy parent (-1)
+        q.push({src, -1});
+        
+        while(!q.empty()){
+            int node = q.front().first;
+            int parent = q.front().second;
+            q.pop();
+            
+            for(int x : adj[node]){
+                if(!vis[x]){
+                    vis[x] = true;
+                    q.push({x, node});
+                }
+                // If visited, but it's NOT the node we just came from -> Cycle!
+                else if(parent != x){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+  public:
+    bool isCycle(int V, vector<vector<int>>& edges) {
+        // Initialize structural vectors with explicit sizes
+        vector<vector<int>> adj(V);
+        vector<bool> vis(V, false);
+        
+        // Build the Adjacency List
+        for(auto edge: edges){
+            adj[edge[0]].push_back(edge[1]);
+            adj[edge[1]].push_back(edge[0]);
+        }
+        
+        // Check EVERY node to catch disconnected islands
+        for(int i = 0; i < V; i++) {
+            if(!vis[i]) {
+                if(detect(i, adj, vis)) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+};
+
+
+🚨 Key Mistakes to Avoid in the Future
+
+1. The Disconnected Island Trap
+
+The Mistake: Only running the search from node 0 (e.g., return detect(0, adj, vis);).
+Why to avoid it: Graphs are not always one continuous web. If the graph is split into separate islands, starting at node 0 will only search the first island. You will completely miss a cycle sitting on an isolated island.
+The Rule: Always use a for loop from 0 to V-1 to check if a node is unvisited before declaring the graph cycle-free.
+
+2. The Pass-by-Value Memory Leak (TLE/MLE)
+
+The Mistake: Passing the adjacency list without an ampersand: bool detect(int src, vector<vector<int>> adj)
+Why to avoid it: C++ defaults to pass-by-value. It will physically copy the entire massive 2D graph array into a new block of RAM every single time you call the function, causing immediate memory and time limit crashes.
+The Rule: Always pass large read-only data structures by reference: vector<vector<int>>& adj.
+
+3. Variable Length Arrays (VLAs)
+
+The Mistake: Declaring an array using a variable size: int vis[V] = {0};
+Why to avoid it: This is illegal in standard C++ and will cause compilation errors on strict platforms like LeetCode.
+The Rule: If the size is determined at runtime, use a vector: vector<int> vis(V, 0);
+
+4. Uninitialized Vector Sizes (Seg Fault)
+
+The Mistake: Declaring vector<vector<int>> adj; and immediately using adj[edge[0]].push_back(...).
+Why to avoid it: The outer vector starts with a size of 0. Accessing an index that doesn't exist yet causes an immediate Segmentation Fault.
+The Rule: Initialize dynamic arrays with their required size upfront: vector<vector<int>> adj(V);
