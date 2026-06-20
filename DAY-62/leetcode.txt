@@ -1,0 +1,82 @@
+[I] 542: Distance to Nearest 0 (01 Matrix)
+
+Description:
+
+Given an m x n binary matrix mat, return a new matrix where each cell contains the distance to the nearest 0.
+
+The distance between two adjacent cells (up, down, left, right) is 1.
+
+If a cell contains a 0, its distance to the nearest 0 is 0.
+
+Intuition (Flipping the Perspective)
+
+The most common beginner mistake is to run a standard BFS starting from every single 1 to hunt for a 0. In a grid full of 1s, this causes massive overlapping searches and results in a Time Limit Exceeded (TLE) crash.
+
+Instead, we must flip the perspective: Let the 0s hunt for the 1s.
+This is exactly the same mathematical architecture as "Rotting Oranges". If we imagine every 0 as a source of water, we can let the water flow outward in waves.
+
+Wave 1 (Distance 1): Reaches all 1s directly touching a 0.
+
+Wave 2 (Distance 2): Reaches all 1s directly touching a Wave 1 cell.
+Because BFS radiates outward symmetrically, the first time a wave touches a cell, it is mathematically guaranteed to be the shortest possible distance.
+
+Approach
+
+The $O(1)$ Extra Space Setup: Instead of creating a separate visited boolean array, initialize your ans matrix with -1 (acting as our "unvisited" flag).
+
+The Starting Line (Multi-Source): Scan the entire input matrix. Every time you find a 0, push its coordinates and a distance of 0 into the queue. Immediately mark its location in the ans matrix as 0.
+
+The Wave Expansion: While the queue is not empty, pop the front cell. Check its 4 neighbors using directional arrays.
+
+The Claim: If a neighbor is within bounds AND its value in the ans array is still -1 (unvisited), it means we have found the shortest path to it. We immediately overwrite the -1 with current_distance + 1, and push this neighbor into the queue to continue the wave.
+
+C++ Solution (Optimal Time & Space)
+
+class Solution {
+public:
+    vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+        int n = mat.size();
+        int m = mat[0].size();
+
+        // Initialize answer array with -1 (Acts as our unvisited tracker)
+        vector<vector<int>> ans(n, vector<int>(m, -1));
+        queue<pair<pair<int, int>, int>> q;
+
+        // Multi-Source Setup: Push all 0s into the queue at distance 0
+        for(int i = 0; i < n; i++){
+            for (int j = 0; j < m; j++){
+                if(mat[i][j] == 0){
+                    ans[i][j] = 0; // Mark as visited with distance 0
+                    q.push({{i,j}, 0});
+                }
+            }
+        }
+
+        int drow[] = {-1, 0, 1, 0};
+        int dcol[] = {0, -1, 0, 1};
+
+        // BFS Engine
+        while(!q.empty()){
+            auto node = q.front();
+            q.pop();
+
+            int row = node.first.first;
+            int col = node.first.second;
+            int dist = node.second;
+
+            for(int i = 0; i < 4; i++){
+                int newRow = row + drow[i];
+                int newCol = col + dcol[i];
+
+                // Check bounds and if it is unvisited (-1)
+                if(newRow >= 0 && newRow < n && newCol >= 0 && newCol < m && ans[newRow][newCol] == -1){
+                    
+                    // Claim the cell by overwriting -1 with the actual distance
+                    ans[newRow][newCol] = dist + 1;
+                    q.push({{newRow, newCol}, dist + 1});
+                }
+            }
+        }
+        return ans;
+    }
+};
