@@ -53,3 +53,27 @@ Complexity:
 
 Time: O(H) — Where H is the tree height. (O(\log N) average, O(N) worst-case).
 Space: O(1) — Operates entirely in-place with a while loop.
+
+code:
+
+class Solution {
+  public:
+    int findFloor(Node* root, int x) {
+        int ans = -1;
+        
+        while(root != NULL){
+            if(root->data == x){
+                ans = root->data;
+                return ans;
+            }
+            if(root->data < x){
+                ans = root->data;
+                root = root->right;
+            }
+            else{
+                root = root->left;
+            }
+        }
+        return ans;
+    }
+};
