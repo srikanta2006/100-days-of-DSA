@@ -1,0 +1,71 @@
+[I] 130: Surrounded Regions (Capture 'O's)
+
+Description:
+
+Given an m x n matrix containing 'X' and 'O', capture all regions that are 4-directionally surrounded by 'X'. A region is captured by flipping all 'O's into 'X's in that surrounded region.
+Crucial Rule: An 'O' cannot be flipped if it is on the boundary of the board, or if it is connected to an 'O' on the boundary.
+
+Intuition & Approach:
+
+Instead of trying to find regions to capture, play the problem in reverse: find the regions that are "safe" and protect them.
+
+The Border Patrol: Scan the outer perimeter (the 4 edges) of the grid. If you find an 'O', it is invincible. Push it into the queue and mark it as visited.
+
+The Rescue Mission (BFS): Run a standard BFS starting from those border 'O's. Any inner 'O' that connects to a border 'O' is also safe. Mark them all as visited.
+
+The Execution: Once the BFS finishes, sweep through the entire grid one last time. If you find an 'O' that was never visited by your rescue mission, it is completely surrounded. Flip it to 'X'.
+
+C++ Solution ($O(N \times M)$ Time & Space)
+
+class Solution {
+public:
+    void solve(vector<vector<char>>& board) {
+        int n = board.size();
+        int m = board[0].size();
+
+        queue<pair<int, int>> q;
+        vector<vector<bool>> vis(n, vector<bool>(m, false));
+
+        // 1. Gather all 'O's on the boundary
+        for(int row = 0; row < n; row++){
+            for(int col = 0; col < m; col++){
+                if(row == 0 || row == n - 1 || col == 0 || col == m - 1){
+                    if(board[row][col] == 'O'){
+                        vis[row][col] = true; 
+                        q.push({row, col});
+                    }  
+                }
+            }
+        }
+
+        // 2. BFS to find all safe connected 'O's
+        while(!q.empty()){
+            auto node = q.front();
+            q.pop();
+            int row = node.first;
+            int col = node.second;
+
+            int drow[] = {-1, 0, 1, 0};
+            int dcol[] = {0, -1, 0, 1};
+
+            for(int i = 0; i < 4; i++){
+                int newrow = row + drow[i];
+                int newcol = col + dcol[i];
+
+                if(newrow >= 0 && newrow < n && newcol >= 0 && newcol < m && !vis[newrow][newcol] && board[newrow][newcol] == 'O'){
+                    vis[newrow][newcol] = true;
+                    q.push({newrow, newcol});
+                }
+            }
+        }
+
+        // 3. Flip all unprotected 'O's
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(!vis[i][j] && board[i][j] == 'O'){
+                    board[i][j] = 'X'; 
+                }
+            }
+        }
+    }
+};
