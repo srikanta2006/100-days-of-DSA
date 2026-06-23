@@ -1,0 +1,94 @@
+Number of Distinct Islands
+
+Description
+
+Given an m x n binary grid where 1 represents land and 0 represents water, an island is a 4-directionally connected group of 1s. Return the number of distinct islands. Two islands are considered the same if one can be translated (shifted up, down, left, or right) to match the other exactly.
+
+Intuition & Approach
+
+How do you teach a computer to recognize that a 2x2 square in the top-left corner is the exact same shape as a 2x2 square in the bottom-right corner?
+Normalization via Base Coordinates.
+
+When you find a new unvisited island, record its starting coordinates as the baserow and basecol.
+
+As you run your BFS to explore the rest of the island, subtract the base coordinates from every new cell's coordinates (scaledrow = newrow - baserow).
+
+Store this sequence of scaled coordinates in a dynamic array (Vector). No matter where an island is located on the grid, if its shape is the same, its sequence of scaled coordinates will be identical.
+
+Insert that Vector into a mathematical Set. The Set will automatically filter out any duplicate shapes, leaving you with the exact number of distinct islands.
+
+C++ Solution ($O(N \times M)$ Time & Space)
+
+class Solution {
+  public:
+    int countDistinctIslands(vector<vector<char>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+
+        vector<vector<bool>> vis(n, vector<bool>(m, false));
+        queue<pair<int, int>> q;
+        
+        // Use a standard set (Binary Search Tree) to handle Vectors and Pairs
+        set<vector<pair<int, int>>> s;
+
+        int drow[] = {-1, 0, 1, 0};
+        int dcol[] = {0, -1, 0, 1};
+
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(!vis[i][j] && grid[i][j] == '1'){
+                    q.push({i, j});
+                    vis[i][j] = true;
+                    
+                    vector<pair<int, int>> cord;
+                    int baserow = i;
+                    int basecol = j;
+                    
+                    // The base node is always (0,0) relative to itself
+                    cord.push_back({0, 0});
+
+                    while(!q.empty()){
+                        auto cell = q.front();
+                        q.pop();
+
+                        int row = cell.first;
+                        int col = cell.second;
+
+                        for(int k = 0; k < 4; k++){
+                            int newrow = row + drow[k];
+                            int newcol = col + dcol[k];
+
+                            if(newrow >= 0 && newrow < n && newcol >= 0 && newcol < m && !vis[newrow][newcol] && grid[newrow][newcol] == '1'){
+                                vis[newrow][newcol] = true;
+                                q.push({newrow, newcol});
+                                
+                                // Normalize the coordinates
+                                int scaledrow = newrow - baserow;
+                                int scaledcol = newcol - basecol;
+                                cord.push_back({scaledrow, scaledcol});
+                            }
+                        }
+                    }
+                    // Insert the shape signature into the set
+                    s.insert(cord);
+                }
+            }
+        }
+        return s.size();
+    }
+};
+
+
+🚨 Key Mistakes to Avoid in the Future
+
+1. The Hashing Identity Crisis (unordered_set vs set)
+
+The Mistake: Declaring unordered_set<vector<pair<int, int>>> s;
+Why to avoid it: An unordered_set relies on a hash table. C++ does not have built-in hash functions for complex nested objects like a Vector of Pairs, resulting in a fatal compilation error.
+The Rule: When storing complex STL containers (like vectors or pairs) to track uniqueness, default to std::set. It uses sorting (<, >) instead of hashing, which C++ knows how to do natively.
+
+2. Variable Shadowing
+
+The Mistake: Using for(int i=0; i<4; i++) for the directional loop while already inside a grid loop that uses for(int i=0; i<n; i++).
+Why to avoid it: The inner i overwrites the outer i. If you accidentally reference i inside the BFS expecting it to be your row coordinate, you will get a number between 0 and 3 instead, causing erratic behavior.
+The Rule: Always use distinct iterator variables (k, d, or dir) for your directional arrays.
