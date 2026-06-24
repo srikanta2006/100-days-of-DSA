@@ -1,0 +1,139 @@
+Topological Sort (DFS & Stack)
+
+Description:
+
+Given a Directed Acyclic Graph (DAG) with V vertices and E edges, find a linear ordering of its vertices such that for every directed edge U -> V, vertex U appears before V in the ordering.
+Real-World Application: Resolving dependencies (e.g., determining the order to take college courses, or the build order of software packages).
+
+Intuition & Approach:
+
+If a node has prerequisites (incoming edges), it must be placed after those prerequisites.
+With DFS, we go as deep as physically possible down a dependency chain until we hit a node that has no outbound edges (meaning it isn't a prerequisite for anything else).
+
+The Deep Dive: Start a DFS on any unvisited node. Keep traveling down the directed edges until you reach a "dead end" node.
+
+The Stack Claim: Because this dead-end node doesn't point to anything, it is safe to be the last item in our topological order. We push it onto a Stack.
+
+The Unwind: As the recursion unspools, we push the parent nodes onto the stack one by one.
+
+The Reversal: Because a Stack is Last-In-First-Out (LIFO), popping everything off the stack at the very end naturally reverses the finishing times, putting the absolute "root" prerequisites at the very front of our final answer array.
+
+C++ Solution ($O(V + E)$ Time & Space)
+
+class Solution {
+  private:
+    // Pass everything by reference to save memory
+    void dfs(int src, vector<vector<int>>& adjacency, vector<bool>& vis, stack<int>& s){
+        vis[src] = true;
+        
+        for(auto adj : adjacency[src]){
+            if(!vis[adj]){
+                dfs(adj, adjacency, vis, s);
+            }
+        }
+        // Once all outbound dependencies are fully explored, push to stack
+        s.push(src);
+    }
+    
+  public:
+    vector<int> topoSort(int V, vector<vector<int>>& edges) {
+        vector<bool> vis(V, false);
+        vector<vector<int>> adjacency(V);
+        
+        // Build the Directed Graph (One-way street!)
+        for(auto edge : edges){
+            adjacency[edge[0]].push_back(edge[1]);
+        }
+        
+        stack<int> s;
+        
+        // Check EVERY node to handle disconnected graph islands
+        for(int i = 0; i < V; i++){
+            if(!vis[i]){
+                dfs(i, adjacency, vis, s);
+            }
+        }   
+        
+        // Unload the stack to get the final topological order
+        vector<int> ans;
+        while(!s.empty()){
+            ans.push_back(s.top());
+            s.pop();
+        }
+        
+        return ans;
+    }
+};
+
+_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+BFS Approach : 
+
+Topological Sort (Kahn's Algorithm - BFS)
+
+Description
+
+Given a Directed Acyclic Graph (DAG) with V vertices and E edges, find a linear ordering of its vertices. In this order, for every directed edge U -> V, vertex U must appear before V.
+
+Intuition & Approach (The Dependency Resolver)
+
+Think of this algorithm exactly like a package manager running npm install. If you are building a tool and package A depends on package B, B must be installed first. Kahn's Algorithm is the engine that figures out that exact installation order.
+
+Calculate Dependencies (In-Degrees): First, map out the graph. Every time a node is the destination of an edge, increase its indegree (its prerequisite count).
+
+Find the Base Packages: Scan the indegree array. Any node with an in-degree of 0 has no dependencies. These are safe to process immediately, so push them into the Queue.
+
+Peel Away Layers (BFS): * Pop a node from the Queue and add it to your final answer.
+
+Look at all the nodes that depended on it. Since you just "installed" their prerequisite, subtract 1 from their in-degree.
+
+If any of those nodes reach an in-degree of 0, they are now "unlocked" and ready to go. Push them into the Queue.
+
+Continue until the Queue is empty. If the graph was a valid DAG, your answer array now holds the perfect topological order.
+
+C++ Solution ($O(V + E)$ Time & Space)
+
+class Solution {
+  public:
+    vector<int> topoSort(int V, vector<vector<int>>& edges) {
+        vector<int> ans;
+        
+        // Create adjacency list
+        vector<vector<int>> adj(V);
+        
+        // Create indegree tracker
+        vector<int> indegree(V, 0);
+        
+        // Build graph and calculate incoming edges
+        for(auto edge : edges){
+            adj[edge[0]].push_back(edge[1]);
+            indegree[edge[1]]++; // Increase prerequisite count for destination
+        }
+        
+        queue<int> q;
+        
+        // Queue all nodes with 0 prerequisites
+        for(int i = 0; i < V; i++){
+            if(indegree[i] == 0){
+                q.push(i);
+            }
+        }
+        
+        // Process queue and unlock subsequent nodes
+        while(!q.empty()){
+            int node = q.front();
+            q.pop();
+            ans.push_back(node);
+            
+            for(int it : adj[node]){
+                indegree[it]--;
+                // If all prerequisites are met, add to queue
+                if(indegree[it] == 0){
+                    q.push(it);
+                }
+            }
+        }
+        
+        return ans;
+    }
+};
