@@ -1,0 +1,51 @@
+detecting cycles in a directed graph :
+
+We can use the same topological sort approach as kahn's algorithm
+If no cycles the indegree values will be zero and topo order formed
+If cycles persist then the way around
+
+code:
+
+class Solution {
+  public:
+    bool isCyclic(int V, vector<vector<int>> &edges) {
+        
+        //constructing adjecency list and indegree list
+        
+        vector<vector<int>> adj(V);
+        vector<int> indegree(V);
+        
+        for(auto edge : edges){
+            adj[edge[0]].push_back(edge[1]);
+            indegree[edge[1]]++;
+        }
+        
+        queue<int> q;
+        
+        for(int i=0; i<V; i++){
+            if(indegree[i]==0){
+                q.push(i);
+            }
+        }
+        
+        while(!q.empty()){
+            int node = q.front();
+            q.pop();
+            
+            for(int it : adj[node]){
+                indegree[it]--;
+                if(indegree[it]==0){
+                    q.push(it);
+                }
+            }
+        }
+        
+        for(int i=0; i<V; i++){
+            if(indegree[i]!=0){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+};
