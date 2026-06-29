@@ -1,0 +1,104 @@
+Shortest Path in a Directed Acyclic Graph (DAG)
+
+Description:
+
+Given a Directed Acyclic Graph of V vertices and E edges, where each edge has a weight, find the shortest path from a source node (usually Node 0) to all other vertices. If a vertex is unreachable, its distance should be -1.
+
+Intuition & Approach:
+
+Why not use Dijkstra's Algorithm? Because this is a DAG! In a DAG, we can order the nodes linearly using Topological Sort.
+If we process the nodes in their exact topological order, we guarantee that by the time we arrive at node X, we have already fully resolved every single path that could possibly reach X.
+
+Topological Sort (DFS): Run a standard DFS Topological Sort to push all nodes into a Stack. The nodes at the top of the stack will be the starting points of the graph.
+
+Initialize Distances: Create a dist array initialized to INT_MAX (infinity). Set the starting node's distance to 0.
+
+Relax the Edges: * Pop a node from the stack.
+
+If its current distance is not INT_MAX (meaning it is actually reachable), look at all its neighbors.
+
+If the current distance + edge weight is smaller than the neighbor's known distance, update the neighbor's distance.
+
+Format the Output: Convert any remaining INT_MAX values to -1 to denote unreachable nodes.
+
+C++ Solution ($O(V + E)$ Time & Space)
+
+class Solution {
+  private:
+    // Standard DFS Topological Sort
+    void toposort(int src, vector<vector<pair<int, int>>>& adj, stack<int>& s, vector<bool>& vis){
+        vis[src] = true;
+        for(auto node : adj[src]){
+            if(!vis[node.first]){
+                toposort(node.first, adj, s, vis);
+            }
+        }
+        s.push(src);
+    }
+    
+  public:
+    vector<int> shortestPath(int V, int E, vector<vector<int>>& edges) {
+        // 1. Build the Adjacency List with Weights
+        vector<vector<pair<int, int>>> adj(V);
+        for(int i = 0; i < E; i++){
+            int u = edges[i][0];
+            int v = edges[i][1];
+            int wt = edges[i][2];
+            adj[u].push_back({v, wt});
+        }
+        
+        // 2. Perform Topological Sort
+        stack<int> s;
+        vector<bool> vis(V, false);
+        for(int i = 0; i < V; i++){
+            if(!vis[i]){
+                toposort(i, adj, s, vis);
+            }
+        }
+        
+        // 3. Initialize Distance Array
+        vector<int> dist(V, INT_MAX);
+        dist[0] = 0; // Assuming Node 0 is always the source
+        
+        // 4. Process nodes in Topological Order (Edge Relaxation)
+        while(!s.empty()){
+            int node = s.top();
+            s.pop();
+            int d = dist[node];
+            
+            // SECURITY CHECK: Only relax edges if the node is actually reachable
+            if(d != INT_MAX){
+                for(auto ele : adj[node]){
+                    int v = ele.first;
+                    int wt = ele.second;
+                    // Relax the edge if a shorter path is found
+                    if(d + wt < dist[v]){
+                        dist[v] = d + wt;
+                    }
+                }
+            }
+        }
+        
+        // 5. Cleanup unreachable nodes for standard platform formatting
+        for(int i = 0; i < V; i++){
+            if(dist[i] == INT_MAX){
+                dist[i] = -1;
+            }
+        }
+        
+        return dist; 
+    }
+};
+
+
+🚨 Key Concepts & Traps to Remember
+
+1. The INT_MAX Overflow Bomb
+
+The Trap: Trying to relax an edge from an unreachable node: INT_MAX + weight.
+Why it fails: In C++, adding to INT_MAX causes an integer overflow, wrapping the number around to a massive negative integer (e.g., -2147483648). This negative number will accidentally trigger your < dist[v] check and corrupt the array.
+The Fix: Wrap your relaxation loop in an if (d != INT_MAX) check.
+
+2. DAG Optimization vs. Dijkstra
+
+If you use Dijkstra's Algorithm (a Priority Queue) for this problem, it will work, but it runs at $O(E \log V)$ time. By utilizing the Topological Sort property of a DAG, you strip away the heavy Priority Queue sorting and solve the graph in pure linear $O(V + E)$ time.
