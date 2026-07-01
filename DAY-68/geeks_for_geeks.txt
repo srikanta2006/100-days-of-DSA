@@ -1,0 +1,69 @@
+Dijkstra Algorithm usign priority Queue
+
+Description: We need to find the shortest distance from a source node to all other nodes in an "undirected weighted graph"
+
+Intuition:
+we can have multiple paths to a single node but we need to choose the leact cost.
+for this we need to calculate and keep track of the shortest distance to each node in a vector and update it according to the weight from diff node 
+
+Approach: 
+We use a priority queue of pair {distance, node} => the first sorting is done on distance, if same then goes to node value. 
+We are using min heap
+syntax : priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> => <type, container, comparator>
+
+- with use of this we push the node if its dist is updated
+- intially dist vector is filled with INT_MAX
+
+Limitations:
+We cant use this algo if the graph contains negative weights, because it falls in infinite loop
+
+Time complexity : O(E log(v)) where E- no of edges & V- no of nodes
+code:
+class Solution {
+  public:
+    vector<int> dijkstra(int V, vector<vector<int>> &edges, int src) {
+        
+        //form adjecency matrix
+        vector<vector<pair<int, int>>> adj(V); // {node, weight}
+        
+        for(auto edge : edges){
+            int u = edge[0];
+            int v = edge[1];
+            int wt = edge[2];
+            
+            adj[edge[0]].push_back({edge[1], edge[2]});
+            adj[edge[1]].push_back({edge[0], edge[2]});
+        }
+        
+        //create a priority queue
+        // Syntax: priority_queue<Type, Container, Comparator>
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> min_heap; // {dist, node}
+        min_heap.push({0, src});
+        
+        //create the result vector for distance
+        vector<int> ans(V);
+        for(int i=0; i<V; i++) ans[i]=INT_MAX;
+        ans[src]=0;
+        
+        //edge relaxation
+        while(!min_heap.empty()){
+            auto node = min_heap.top();
+            min_heap.pop();
+            
+            int dist = node.first;
+            int val = node.second;
+            
+            for(auto it : adj[val]){
+                int ele = it.first;
+                int wt = it.second;
+                
+                if(dist+wt < ans[ele]){
+                    ans[ele]=dist+wt;
+                    min_heap.push({dist+wt, ele});
+                }
+            }
+        }
+        return ans;
+    }
+};
+
