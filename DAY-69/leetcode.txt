@@ -1,0 +1,81 @@
+3286: FIND A SAFE WALK THROUGH A GRID (DIJKSTRA / PRIORITY QUEUE)
+
+DESCRIPTION
+Given an N x M binary grid and a starting health value, determine if it is possible to reach the bottom-right cell [n-1][m-1] with health strictly greater than 0. The cost to step on a cell is its grid value (0 or 1).
+
+INTUITION & APPROACH
+This problem asks for the shortest path (minimum damage taken) in a weighted graph. While standard BFS (using a queue) works perfectly for unweighted graphs, this grid has varying edge weights.
+
+By upgrading to Dijkstra's Algorithm, we swap the standard queue for a priority_queue (Min-Heap). This guarantees that the path with the lowest cumulative damage always bubbles to the top and is processed first, ensuring we find the absolute safest route.
+
+C++ SOLUTION
+
+class Solution {
+public:
+bool findSafeWalk(vector<vector>& grid, int health) {
+int n = grid.size();
+int m = grid[0].size();
+
+    // Track the minimum damage taken to reach each cell
+    vector<vector<int>> cost(n, vector<int>(m, INT_MAX));
+    
+    // Min-Heap Priority Queue storing {cost, {row, col}}
+    priority_queue<pair<int, pair<int, int>>, 
+                   vector<pair<int, pair<int, int>>>, 
+                   greater<pair<int, pair<int, int>>>> pq;
+
+    // Initialize the starting point
+    pq.push({grid[0][0], {0, 0}});
+    cost[0][0] = grid[0][0];
+
+    int dRow[] = {-1, 0, 1, 0};
+    int dCol[] = {0, -1, 0, 1};
+
+    while(!pq.empty()){
+        auto node = pq.top();
+        pq.pop();
+
+        int currentDamage = node.first;
+        int row = node.second.first;
+        int col = node.second.second;
+
+        // PERFORMANCE OPTIMIZATION: The Stale State Check
+        // Skip processing if this is an outdated, higher-cost duplicate in the queue
+        if(currentDamage > cost[row][col]) continue; 
+
+        // Explore 4 directions
+        for(int i = 0; i < 4; i++){
+            int newRow = row + dRow[i];
+            int newCol = col + dCol[i];
+
+            // Boundary check + Cost relaxation
+            if(newRow >= 0 && newRow < n && newCol >= 0 && newCol < m && grid[newRow][newCol] + cost[row][col] < cost[newRow][newCol]){
+                
+                cost[newRow][newCol] = grid[newRow][newCol] + cost[row][col];
+                
+                // Push the new lowest cost and coordinates into the Min-Heap
+                pq.push({cost[newRow][newCol], {newRow, newCol}});
+            }
+        }
+    }
+    
+    // Final check: Did we survive the safest possible path?
+    if(health <= cost[n-1][m-1]){
+        return false;
+    }
+    return true;
+}
+};
+
+KEY CONCEPTS & TRAPS TO REMEMBER
+
+The Priority Queue Syntax
+In C++, a priority_queue is a Max-Heap by default. To turn it into a Min-Heap (where the lowest cost bubbles to the top), we must explicitly use greater in the declaration. Because we need to store both the cost and the coordinates, we nest a pair inside a pair. The queue automatically sorts based on the first integer (the cost).
+
+The "Stale State" Check (Performance Saver)
+if(currentDamage > cost[row][col]) continue;
+Because Priority Queues in C++ cannot update existing elements, they simply push duplicate coordinates if a better path is found later. This single line acts as an emergency brake. If we pop a stale duplicate that has a higher cost than the best path we've already found, we skip the for loop. This prevents the computer from executing useless math and boundary checks, saving us from a Time Limit Exceeded (TLE) error.
+
+COMPLEXITY
+Time Complexity: O(N x M log(N x M)) due to the sorting operations under the hood of the priority queue.
+Space Complexity: O(N x M) to store the cost array and the queue elements.

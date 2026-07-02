@@ -1,0 +1,39 @@
+Bellman-ford algo to calculate shortest path between src to all nodes
+exception from dijkstra which was not allowing negative weights is overcomed in this Algorithm
+we can even detect negative cycles using this algo
+
+entire theory in july-2nd 2026 notes
+
+code:
+class Solution {
+  public:
+    vector<int> bellmanFord(int V, vector<vector<int>>& edges, int src) {
+        
+        //edge => {u, v, wt}
+        
+        vector<int> dist(V, 100000000);
+        dist[src]=0;
+        for(int i=0; i<V-1; i++){ //N-1 iterations
+            for(auto edge : edges){ //all edges
+                int u=edge[0];
+                int v=edge[1];
+                int wt=edge[2];
+                
+                if(dist[u]!=100000000 && dist[u]+wt < dist[v]){
+                    dist[v]=dist[u]+wt;
+                }
+            }
+        }
+        for(auto edge : edges){ 
+                int u=edge[0];
+                int v=edge[1];
+                int wt=edge[2];
+                
+                if(dist[u]!=100000000 && dist[u]+wt < dist[v]){
+                    return {-1};
+                }
+            }
+        
+        return dist;
+    }
+};
