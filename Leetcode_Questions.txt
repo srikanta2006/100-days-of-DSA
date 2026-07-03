@@ -1,36 +1,36 @@
 Day | Number | Title
 --------------------------------------------------
-DAY-05 | 136 | Single number
-DAY-06 | 53 | maximum subarray
-DAY-06 | 169 | majority element
-DAY-07 | 50 | Pow(x,n)
-DAY-07 | 268 | Missing number
+DAY-05 | 136 | Single Number
+DAY-06 | 53 | Maximum Subarray
+DAY-06 | 169 | Majority Element
+DAY-07 | 50 | Pow(x, n)
+DAY-07 | 268 | Missing Number
 DAY-08 | 121 | Best Time to Buy and Sell Stock
-DAY-08 | 11 | Container with most water
+DAY-08 | 11 | Container With Most Water
 DAY-09 | 238 | Product of Array Except Self
 DAY-10 | 217 | Contains Duplicate
-DAY-10 | 283 | Move Zeros
+DAY-10 | 283 | Move Zeroes
 DAY-12 | 33 | Search in Rotated Sorted Array
-DAY-13 | 852 | Peak index in mountain array
-DAY-18 | 75 | sort colors
-DAY-19 | 88 | Merge sorted arrays
-DAY-19 | 31 | Next permutation
-DAY-22 | 567 | Permutations in string
-DAY-23 | 204 | count primes
+DAY-13 | 852 | Peak Index in a Mountain Array
+DAY-18 | 75 | Sort Colors
+DAY-19 | 88 | Merge Sorted Array
+DAY-19 | 31 | Next Permutation
+DAY-22 | 567 | Permutations in String
+DAY-23 | 204 | Count Primes
 DAY-25 | 240 | Search a 2D Matrix II
-DAY-26 | 1 | Two sum
+DAY-26 | 1 | Two Sum
 DAY-27 | 560 | Subarray Sum Equals K
-DAY-32 | 90 | subsets II
+DAY-32 | 90 | Subsets II
 DAY-33 | 37 | Sudoku Solver
-DAY-39 | 876 | Middle of Linked List
-DAY-39 | 206 | Reverse a Linked List
-DAY-39 | 142 | Linked list cycle-II (detect and return the link node)
-DAY-40 | 21 | Merge two sorted Lists
-DAY-43 | 124 | Maximum Path Sum in Binary Tree
-DAY-44 | 987 | Vertical order traversal using level order method
+DAY-39 | 876 | Middle of the Linked List
+DAY-39 | 206 | Reverse Linked List
+DAY-39 | 142 | Linked List Cycle II
+DAY-40 | 21 | Merge Two Sorted Lists
+DAY-43 | 124 | Binary Tree Maximum Path Sum
+DAY-44 | 987 | Vertical Order Traversal of a Binary Tree
 DAY-46 | 101 | Symmetric Tree
-DAY-46 | 236 | Lowest common ansestor of a Binary Tree
-DAY-48 | 863 | All nodes distance K in binary tree
+DAY-46 | 236 | Lowest Common Ancestor of a Binary Tree
+DAY-48 | 863 | All Nodes Distance K in Binary Tree
 DAY-49 | 105 | Construct Binary Tree from Preorder and Inorder Traversal
 DAY-49 | 889 | Construct Binary Tree from Preorder and Postorder Traversal
 DAY-50 | 297 | Serialize and Deserialize Binary Tree
@@ -39,7 +39,21 @@ DAY-52 | 701 | Insert into a Binary Search Tree
 DAY-53 | 450 | Delete Node in a BST
 DAY-53 | 230 | Kth Smallest Element in a BST
 DAY-53 | 98 | Validate Binary Search Tree
-DAY-54 | 235 | Lowest common ancestor of a Binary search Tree
+DAY-54 | 235 | Lowest Common Ancestor of a BST
 DAY-55 | 173 | Binary Search Tree Iterator
-DAY-56 | 653 | Two Sum IV Input is a BST
+DAY-56 | 653 | Two Sum IV - Input is a BST
 DAY-56 | 99 | Recover Binary Search Tree
+DAY-57 | 333 | Largest BST Subtree
+DAY-58 | 98 | Validate Binary Search Tree
+DAY-59 | 230 | Kth Smallest Element in a BST
+DAY-60 | 1008 | Construct Binary Search Tree from Preorder Traversal
+DAY-61 | 1305 | All Elements in Two Binary Search Trees
+DAY-62 | 199 | Binary Tree Right Side View
+DAY-63 | 107 | Binary Tree Level Order Traversal II
+DAY-64 | 102 | Binary Tree Level Order Traversal
+DAY-65 | 104 | Maximum Depth of Binary Tree
+DAY-66 | 543 | Diameter of Binary Tree
+DAY-67 | 103 | Binary Tree Zigzag Level Order Traversal
+DAY-68 | 426 | Convert Binary Search Tree to Sorted Doubly Linked List
+DAY-69 | 222 | Count Complete Tree Nodes
+DAY-70 | 110 | Balanced Binary Tree

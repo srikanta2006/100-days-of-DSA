@@ -2,5 +2,20 @@ Day | Title
 --------------------------------------------------
 DAY-52 | Find Ceil in a BST
 DAY-52 | Find Floor in a BST
+DAY-54 | Lowest Common Ancestor in a BST
 DAY-55 | Inorder Successor in BST
-DAY-57 | 333 Largest BST
+DAY-56 | Recover BST
+DAY-57 | Largest BST
+DAY-58 | Check if a Binary Tree is BST
+DAY-59 | Kth Smallest in BST
+DAY-60 | Construct BST from Preorder
+DAY-61 | Merge Two BSTs
+DAY-62 | Top View of Binary Tree
+DAY-63 | Bottom View of Binary Tree
+DAY-64 | Left View of Binary Tree
+DAY-65 | Right View of Binary Tree
+DAY-66 | Diameter of a Binary Tree
+DAY-67 | Spiral Traversal of a Binary Tree
+DAY-68 | Convert Binary Tree to Doubly Linked List
+DAY-69 | Count Nodes in a Complete Binary Tree
+DAY-70 | Check if a Binary Tree is Balanced

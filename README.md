@@ -1,38 +1,51 @@
 # 🚀 DSA Using C++
 
-**A structured daily journey to master Data Structures & Algorithms in C++.**
+A structured daily journey to master Data Structures and Algorithms in C++.
 
 ---
 
 ## 📌 Project Overview
 
-This repository contains day-by-day C++ implementations and practice problems for key DSA concepts, from fundamentals to advanced algorithms.
+This repository contains day-wise C++ implementations and practice problems covering core DSA topics from fundamentals to advanced tree and sorting problems. It is designed as a learning roadmap for consistent problem solving and coding practice.
 
 ## 📚 Topics Covered
 
-- **Basics**: Pattern printing, number systems, recursion
-- **Arrays**: Search, operations, two pointers
-- **Searching**: Binary search and applications
-- **Sorting**: Bubble, insertion, selection, merge, quick sort, inversion count
-- **Data Structures**: Vectors, maps, pairs, priority queues, linked list
-- **Recursion & Backtracking**: Fibonacci, factorial, subsets, rat maze
-- **Problem Practice**: LeetCode and GeeksforGeeks challenges documented in `leetcode.txt` and `geeks_for_geeks.txt`, with summaries in `Leetcode_Questions.txt` and `geeks_for_geeks.txt` in the root.
+- Basics: pattern printing, number systems, recursion, and simple number theory
+- Arrays: search, reverse, unique element handling, and array operations
+- Searching: binary search and applied variants
+- Sorting: bubble sort, insertion sort, selection sort, merge sort, quick sort, and inversion count
+- Data Structures: vectors, maps, pairs, priority queues, linked lists, and trees
+- Recursion & Backtracking: Fibonacci, factorial, subsets, and rat maze
+- Trees & BSTs: traversal, balancing, BST operations, and tree construction problems
+- Graphs: adjacency list and matrix representation, BFS, DFS, connected components, cycle detection, shortest path, and topological sorting, starting after the tree section that ends around Day 57
+- Practice Lists: LeetCode and GeeksforGeeks problems tracked in the root files
 
 ---
 
-## 🗂️ Structure
+## 🧠 Learning Roadmap
 
-Each day has a folder with `*.cpp` code and optional `leetcode.txt` or `geeks_for_geeks.txt` exercises.
+This repository follows a progressive path:
 
-```
+1. Foundations: patterns, number systems, and basic loops
+2. Arrays and searching: linear search, binary search, and array-based problem solving
+3. Sorting and recursion: core algorithms and backtracking techniques
+4. Linear data structures: vectors, maps, stacks, queues, and linked lists
+5. Trees and BSTs: traversal, insertion, deletion, and tree-based problems
+6. Graphs: traversal and graph-based problem solving, beginning after the final tree-focused topics around Day 57
+
+---
+
+## 🗂️ Repository Structure
+
+Each day contains standalone C++ files and optional practice notes.
+
+```text
 DSA-Using-Cpp/
-├── DAY-01/
-├── DAY-02/
-├── ...
-├── DAY-41/
-├── ...
-├── DAY-53/
-└── README.md
+├── DAY-01/ ... DAY-70/
+├── Boiler_plates/
+├── README.md
+├── Leetcode_Questions.txt
+└── geeks_for_geeks.txt
 ```
 
 ---
@@ -40,8 +53,8 @@ DSA-Using-Cpp/
 ## 🚀 Quick Start
 
 ### Requirements
-- C++ compiler (g++ or cl.exe)
-- VS Code with C/C++ extension (ms-vscode.cpptools)
+- A C++ compiler such as g++ or cl.exe
+- VS Code with the C/C++ extension
 
 ### Build & Run
 
@@ -52,50 +65,40 @@ g++ -o quickSort quickSort.cpp
 ```
 
 ### VS Code Build Tasks
-- `C/C++: g++.exe build active file`
-- `C/C++: cl.exe build active file`
+- C/C++: g++.exe build active file
+- C/C++: cl.exe build active file
 
 ---
 
 ## 🧭 Day-by-Day Highlights
 
-- **DAY-01**: Pattern printing
-- **DAY-02**: Binary/decimal conversion, Fibonacci, primes
-- **DAY-03**: Power and number reversal
-- **DAY-04**: Array operations (intersection, reverse, sum/product, swap)
-- **DAY-05**: Vector reversal
-- **DAY-06**: Max-sum brute force, Moore's majority, pair sum
-- **DAY-07**: Binary exponentiation
-- **DAY-10**: Pointers and references
-- **DAY-12**: Binary search (iterative/recursive)
-- **DAY-14..16**: Search applications (book allocation, painter, aggressive cows)
-- **DAY-17..18**: Sorting algorithms and variations
-- **DAY-20..24**: STL and string/2D operations
-- **DAY-28..34**: Recursion and backtracking
-- **DAY-35..37**: Merge sort, quick sort, count inversions
-- **DAY-38**: Singly linked list
-- **DAY-39..40**: LeetCode practice
-- **DAY-41**: Doubly linked list
-- **DAY-42**: Binary Tree Traversals (Iterative & Level Order)
-- **DAY-43..50**: Binary Tree problems & LeetCode practice
-- **DAY-51**: Morris Traversal
-- **DAY-52..53**: Practice & LeetCode challenges
+- DAY-01 to DAY-04: basics, patterns, number systems, and array operations
+- DAY-05 to DAY-07: vectors, pair sums, and exponentiation
+- DAY-08 to DAY-13: arrays, pointers, and binary search
+- DAY-14 to DAY-18: search applications and sorting techniques
+- DAY-19 to DAY-24: STL, strings, and 2D array operations
+- DAY-25 to DAY-34: recursion, backtracking, and problem practice
+- DAY-35 to DAY-37: merge sort, quick sort, and inversion counting
+- DAY-38 to DAY-41: linked lists and doubly linked lists
+- DAY-42 to DAY-53: binary tree traversals and BST problems
+- DAY-54 to DAY-70: advanced tree and BST practice
+- After the tree section ending around Day 57: graph concepts and graph-based DSA problems, including traversal, shortest path, and cycle detection
 
 ---
 
-## ✅ Best Practices
+## ✅ Practice Tracker
 
-1. Understand the algorithm before coding.
-2. Write and test your own version.
-3. Check edge cases and complexity.
-4. Practice consistently.
+- LeetCode practice list: Leetcode_Questions.txt
+- GeeksforGeeks practice list: geeks_for_geeks.txt
+
+These files are updated as new problems and topics are added to the repository.
 
 ---
 
 ## 📌 Notes
 
-- Use each folder as a standalone exercise.
-- `leetcode.txt` and `geeks_for_geeks.txt` files contain recommended practice problems.
-- This repo is meant for learning, implementation, and quick reference.
+- Treat each folder as a standalone exercise.
+- Focus on understanding the logic before memorizing the code.
+- Practice edge cases and complexity analysis regularly.
 
-*Happy coding!* 🎉
+Happy coding! 🎉
