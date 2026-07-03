@@ -1,0 +1,44 @@
+FLOYD-WARSHALL ALGORITHM (ALL-PAIRS SHORTEST PATH)
+
+DESCRIPTION
+Given a weighted directed graph represented by an adjacency matrix of size n x n, find the shortest distance between every pair of nodes. If there is no direct edge, the distance is set to a large value (10^8) to represent infinity. The graph may contain negative edge weights but no negative weight cycles. The goal is to modify the distances in-place.
+
+INTUITION & APPROACH
+This algorithm uses dynamic programming. We evaluate if a path from node i to node j becomes shorter if we route it through an intermediate node k. By wrapping two loops (i and j) inside a master loop (k), we systematically check every possible intermediate step for every possible pair of nodes.
+
+C++ SOLUTION
+
+class Solution {
+public:
+void floydWarshall(vector<vector> &dist) {
+
+    int n = dist.size();
+    
+    for(int k = 0; k < n; k++){
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                
+                // SECURITY CHECK: Only calculate if both halves of the path exist
+                // 1e8 represents 10^8, which is the platform's infinity value
+                if(dist[i][k] != 1e8 && dist[k][j] != 1e8){
+                    dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
+                }
+                
+            }
+        }
+    }
+    
+}
+};
+
+KEY CONCEPTS & TRAPS TO REMEMBER
+
+The Infinity Value Mismatch Trap
+If a platform explicitly defines infinity as a specific number (like 10^8), you cannot use INT_MAX for your safety checks. If you write an if-statement looking for INT_MAX, a cell containing 10^8 will accidentally pass the check, triggering incorrect calculations. Always match the platform's exact definition of infinity.
+
+The Negative Edge Trap
+If node A cannot reach node B (distance is 10^8), but node B can reach node C with a negative weight (e.g., -5), adding them together gives 99,999,995. Without the security check ensuring neither path is 10^8, the min() function will see 99,999,995 as a valid "smaller" distance and create a fake shortcut that corrupts the matrix.
+
+COMPLEXITY
+Time Complexity: O(N^3) because of the three nested loops exploring every combination of i, j, and k.
+Space Complexity: O(N^2) auxiliary space since the algorithm modifies the given matrix strictly in-place with the 2-D matrix .
