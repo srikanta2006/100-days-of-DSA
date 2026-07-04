@@ -1,0 +1,58 @@
+[I] Minimum Spanning Tree sum calculation :
+Minimum spanning tree theory in the 3rd july notes
+we are using Prim's algo
+
+we use priority queue and a visited array
+push node into the min heap with weight => priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>>
+this selects the least posible edge
+visit each vertex only once if second time then continue
+add the weight to the total and make vis[node]=true;
+
+code:
+class Solution {
+  public:
+    int spanningTree(int V, vector<vector<int>>& edges) {
+        
+        //form adjecency matrix
+        
+        vector<vector<pair<int, int>>> adj(V); // {dest, wt}
+        
+        for(auto it : edges){
+            int u=it[0];
+            int v=it[1];
+            int wt=it[2];
+            
+            adj[u].push_back({v, wt});
+            adj[v].push_back({u, wt});
+        }
+        
+        int sum=0;
+        vector<bool> vis(V, false);
+        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> q; // {cost,node}
+        q.push({0, 0});
+        
+        while(!q.empty()){
+            auto node = q.top();
+            q.pop();
+            
+            int wt = node.first;
+            int curr = node.second;
+            
+            if(vis[curr]) continue;
+            vis[curr]=true;
+            sum=sum+wt;
+            
+            for(auto it : adj[curr]){
+                int src = it.first;
+                int wt = it.second;
+                
+                if(!vis[src]){
+                    q.push({wt, src});
+                }
+            }
+        }
+        return sum;
+    }
+};
+
+Time complexity : E log E
