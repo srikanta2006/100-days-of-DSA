@@ -7,10 +7,10 @@ class DisjointSet{
         vector<int> rank;
     public:
         DisjointSet(int V){
-            vector<int> rank(V,0);
-            vector<int> parent(V);
-            for(int i=0; i<V; i++){
-                parent[i]=i;
+            rank.assign(V, 0);
+            parent.resize(V);
+            for(int i = 0; i < V; i++){
+                parent[i] = i;
             }
         }
     
@@ -34,14 +34,14 @@ class DisjointSet{
 
         //attach smaller tree under the root of the larger tree
         if(r_u_parent > r_v_parent){
-            parent[r_v_parent]=r_u_parent;
+            parent[v_parent]=u_parent;
         }
         else if(r_v_parent > r_u_parent){
-            parent[r_u_parent]=r_v_parent;
+            parent[u_parent]=v_parent;
         }
         else{
-            parent[r_u_parent]=r_v_parent;
-            r_v_parent++;
+            parent[u_parent]=v_parent;
+            rank[v_parent]++;
         }
         return true;
     }
@@ -55,6 +55,6 @@ class DisjointSet{
         }
         else{
             return false;
-        }
+        } 
     }
 };
