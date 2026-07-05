@@ -6,7 +6,7 @@ class DisjointSet{
         vector<int> parent;
         vector<int> rank;
     public:
-        DisjointSet(int V){
+        DisjointSet(int V){ //constructor which create memory for rank and parent vectors
             rank.assign(V, 0);
             parent.resize(V);
             for(int i = 0; i < V; i++){
