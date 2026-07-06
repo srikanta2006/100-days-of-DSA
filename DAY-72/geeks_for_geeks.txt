@@ -1,0 +1,87 @@
+KOSARAJU'S ALGORITHM (STRONGLY CONNECTED COMPONENTS)
+
+DESCRIPTION
+Given a directed graph, find the total number of Strongly Connected Components (SCCs). A Strongly Connected Component is a maximal portion of a directed graph where there is a path from every vertex to every other vertex in that portion.
+
+INTUITION & APPROACH
+Kosaraju's Algorithm brilliantly isolates these components using a strict three-step process:
+
+1. First DFS (Finishing Times): Traverse the original graph. When a node has no unvisited neighbors left, push it onto a stack. This stack now holds nodes in decreasing order of their finishing times.
+2. Reverse the Graph: Flip the direction of every single edge to create a transposed graph.
+3. Second DFS (Count SCCs): Pop nodes from the stack one by one. If a node hasn't been visited yet, start a new DFS on the reversed graph. Because the edges are reversed and we are processing in stack order, the traversal gets mathematically "trapped" inside a single SCC. Each time we trigger a new DFS from the while loop, we count one complete SCC.
+
+C++ SOLUTION
+
+class Solution {
+  private:
+    void dfs(int node, vector<vector<int>>& adj, vector<bool>& vis, stack<int>& finish){
+        vis[node]=true;
+        for(int it : adj[node]){
+            if(!vis[it]){
+                dfs(it, adj, vis, finish);
+            }
+        }
+        finish.push(node);
+    }
+    
+    void dfs3(int node, vector<vector<int>>& adj, vector<bool>& vis){
+        vis[node]=true;
+        for(int it : adj[node]){
+            if(!vis[it]){
+                dfs3(it, adj, vis);
+            }
+        }
+    }
+  public:
+    int kosaraju(int V, vector<vector<int>> &edges) {
+        
+        
+        // adjecency matrix;
+        vector<vector<int>> adj(V);
+        for(auto it : edges){
+            adj[it[0]].push_back(it[1]);
+        }
+        
+        stack<int> finish; //finishing time order
+        
+        //visited array;
+        vector<bool> vis(V, false);
+        for(int i=0; i<V; i++){
+            if(!vis[i]){
+                dfs(i, adj, vis, finish);
+            }
+        }
+        
+        //reverse the graph
+        vector<vector<int>> adjR(V);
+        for(auto it : edges){
+            adjR[it[1]].push_back(it[0]);
+        }
+        
+        
+        vis.assign(V, false);
+        int count=0;
+        while(!finish.empty()){
+            int ele =finish.top();
+            finish.pop();
+            
+            if(!vis[ele]){
+                count++;
+                dfs3(ele, adjR, vis);
+            }
+        }
+        return count;
+    }
+};
+
+KEY CONCEPTS TO REMEMBER
+
+1)The Magic of Graph Reversal
+If you have two components, A and B, where A points to B, a normal DFS starting in A will bleed over and visit B as well. By reversing the graph, B now points to A. When we pull the highest finishing time from the stack (which belongs to A), the DFS starts in A but cannot reach B anymore. It is perfectly contained!
+
+2)Different DFS Functions
+Notice that the first DFS requires passing the stack by reference to push elements after exploring neighbors, while the second DFS (dfs3) only needs to traverse and mark elements as visited. Separating these into two distinct helper functions keeps the logic clean.
+
+COMPLEXITY
+Time Complexity: O(V + E). Building the adjacency list, doing the first DFS, reversing the graph, and doing the second DFS each take linear time relative to the number of vertices and edges.
+Space Complexity: O(V + E) to store the two adjacency lists (original and reversed), plus O(V) auxiliary space for the stack, the visited array, and the recursion depth.
