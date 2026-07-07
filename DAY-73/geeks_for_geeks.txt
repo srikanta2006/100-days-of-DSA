@@ -1,0 +1,87 @@
+Articulation Points (Tarjan's Algorithm)
+Description: Given an undirected graph, find all articulation points (or cut vertices). 
+An articulation point is any node in a graph that, if removed along with its associated edges, disconnects the graph into two or more separate components. 
+If the graph is already disconnected, it increases the total number of connected components.
+
+Intuition & Approach: The algorithm uses a Depth-First Search (DFS) to track two specific timestamps for every node:
+Discovery Time (disc): The exact step counter when the node is first visited.
+Lowest Time (low): The lowest discovery time reachable from the node, including paths that take exactly one "back-edge" up the DFS tree.
+While traversing, if a node U explores a child node V, and V cannot find a back-edge to reach any node discovered before U (represented mathematically as low[V] >= disc[U]), it means V is completely dependent on U to stay connected to the rest of the graph. 
+Therefore, removing U isolates V, making U an articulation point.
+
+code:
+class Solution {
+  private:
+    int timer = 0;
+    
+    void dfs(int src, int parent, vector<int> adj[], vector<int>& disc, vector<int>& low, vector<bool>& vis, set<int>& art){
+        vis[src] = true;
+        disc[src] = timer;
+        low[src] = timer;
+        timer++;
+        
+        int children = 0; 
+        
+        for(int it : adj[src]){
+            if(it == parent) continue;
+            
+            if(!vis[it]){
+                children++; 
+                
+                dfs(it, src, adj, disc, low, vis, art);
+                
+                // Update lowest reachable time based on the child's lowest time
+                low[src] = min(low[src], low[it]);
+                
+                // Articulation condition for NON-ROOT nodes
+                if(low[it] >= disc[src] && parent != -1){
+                    art.insert(src);
+                }
+            }
+            else{
+                // Back-edge found: Update lowest time using the discovered time of the neighbor
+                low[src] = min(low[src], disc[it]);
+            }
+        }
+        
+        // Articulation condition strictly for the ROOT node
+        if(parent == -1 && children > 1){
+            art.insert(src);
+        }
+    }
+    
+  public:
+    vector<int> articulationPoints(int V, vector<int> adj[]) {
+        vector<int> disc(V);
+        vector<int> low(V);
+        vector<bool> vis(V, false);
+        set<int> art;
+        
+        timer = 0; 
+        
+        for(int i = 0; i < V; i++){
+            if(!vis[i]){
+                dfs(i, -1, adj, disc, low, vis, art);
+            }
+        }
+        
+        vector<int> ans;
+        for(int ele : art){
+            ans.push_back(ele);
+        }
+        
+        if(ans.size() == 0){
+            return {-1};
+        }
+        
+        return ans;
+    }
+};
+Key Concepts & Traps to Remember: 
+The Root Node Trap: The standard low[it] >= disc[src] mathematical check fails for the starting node of the DFS (the root). The root is an articulation point if and only if it spawns more than one independent child branch during the DFS. A children counter is mandatory.
+Back-Edge Update Rule: When a back-edge is found (hitting an already visited node that isn't the parent), you update low using the neighbor's disc time, not its low time (low[src] = min(low[src], disc[it])). Using the neighbor's low time could accidentally chain back-edges together, which violates the algorithm's rules.
+Using a Set for Duplicates: A single node might act as a bottleneck for multiple different sub-components. If so, the if condition will trigger multiple times for the same node. Pushing to a set automatically handles deduplication before returning the final array.
+
+Complexity
+Time Complexity: O(V + E) where V is vertices and E is edges. It is a single DFS pass checking every node and every edge exactly once.
+Space Complexity: O(V) auxiliary space to maintain the disc, low, and vis arrays, plus the DFS recursion stack.
