@@ -1,0 +1,81 @@
+70 : Climbing stairs
+Climbing Stairs (Dynamic Programming Progression)
+Description: You are climbing a staircase that takes n steps to reach the top. You can either climb 1 step or 2 steps at a time. 
+The goal is to find the total number of distinct ways to reach the top. 
+This problem is the fundamental blueprint for understanding the Fibonacci sequence and Dynamic Programming.
+
+Approach 1: Pure Recursion (Brute Force)This approach directly translates the mathematical reality: the ways to reach step n is the sum of the ways to reach n-1 and n-2.The Flaw: It calculates the exact same steps repeatedly (overlapping subproblems). 
+To calculate step 5, it calculates step 3 twice. For large numbers, the recursion tree becomes massive, leading to a Time Limit Exceeded (TLE) error.Time Complexity: $O(2^n)$ (Exponential - every node branches into two more).Space Complexity: $O(N)$ (Due to the call stack depth).
+C++
+class Solution {
+public:
+    int climbStairs(int n) {
+        // Base cases: 1 way to climb 1 step, 2 ways to climb 2 steps
+        if(n <= 2) return n;
+
+        int left = climbStairs(n - 1);
+        int right = climbStairs(n - 2);
+
+        return left + right;
+    }
+};
+
+Approach 2: Recursion + Memoization (Top-Down DP)To fix the massive performance flaw of pure recursion, we introduce a "memory" array (memoization). 
+Before calculating a step, we check if we have already solved it. If yes, we instantly return the saved answer. If no, we calculate it, save it, and then return it.
+The Upgrade: This completely prunes the redundant branches of the recursion tree. Every step from 1 to n is calculated exactly once.
+Time Complexity: O(N) (We only solve each subproblem once).
+Space Complexity: O(N) (For the recursion call stack + the memo array).
+C++
+class Solution {
+private:
+    int solve(int n, vector<int>& memo) {
+        if(n <= 2) return n;
+        
+        // If we already calculated this step, return the cached answer
+        if(memo[n] != -1) return memo[n];
+        
+        // Calculate and store the answer for future use
+        memo[n] = solve(n - 1, memo) + solve(n - 2, memo);
+        return memo[n];
+    }
+    
+public:
+    int climbStairs(int n) {
+        // Initialize memoization array with -1 (meaning "uncalculated")
+        vector<int> memo(n + 1, -1);
+        return solve(n, memo);
+    }
+};
+
+Approach 3: Space-Optimized Iteration (Bottom-Up DP)This is the absolute optimal solution. We ditch recursion entirely. Because step n only ever cares about the two immediately preceding steps, we do not need an entire array or a recursion stack. 
+We can just use two variables and shift them forward in a loop.
+The Upgrade: By initializing prev and prev2 to 1, the code elegantly bypasses the need for explicit base-case if statements. 
+If n=1, the loop skips and returns 1. If n=2, it loops once and returns 2.
+Time Complexity: O(N) (A single linear loop).
+Space Complexity: O(1) (Only three integer variables used, perfect memory efficiency).
+C++
+class Solution {
+public:
+    int climbStairs(int n) {
+        int prev = 1;  // Represents n-1
+        int prev2 = 1; // Represents n-2
+        int curi;      // Current step
+        
+        // Build upward starting from step 2
+        for(int i = 2; i <= n; i++){
+            curi = prev + prev2;
+            
+            // Shift variables forward for the next iteration
+            prev2 = prev;
+            prev = curi;
+        }
+        
+        return prev;
+    }
+};
+
+Key Concepts to Remember
+Overlapping Subproblems: If a recursive function is solving the exact same inputs multiple times, it is begging for Dynamic Programming.
+Top-Down vs. Bottom-Up: Memoization (Top-Down) is easier to write if you already have the recursive logic. 
+Iteration (Bottom-Up) is almost always more efficient because it avoids the overhead of function calls on the system stack.
+State Reduction: Whenever a DP array only relies on a fixed number of previous states (like i-1 and i-2), you can usually optimize the space complexity from O(N) down to O(1) by using variables instead of an array.
