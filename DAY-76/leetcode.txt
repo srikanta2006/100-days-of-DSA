@@ -1,0 +1,59 @@
+[I] 64: Minimum path sum    
+
+Description: 
+Given a m x n grid filled with non-negative numbers, 
+find a path from top left to bottom right, which minimizes the sum of all numbers along its path.
+
+Note: You can only move either down or right at any point in time.
+
+Intution: We can calculate all the possible paths 
+at each cell we consider the min path from the cell to the strt node.
+we can use the top- down reccursion approach. 
+
+
+Approach: There are repeating sub problems. For each cell(i,j) we have (i-1, j) and (i, j-1)
+we use 2-D DP.
+
+Code:
+class Solution {
+private:
+    int pathHelper(int i, int j, vector<vector<int>>& grid, vector<vector<int>>& dp){
+        if(i==0 && j==0) return grid[i][j];
+        if(i<0 || j<0) return INT_MAX;
+
+        if(dp[i][j]!=-1) return dp[i][j];
+
+        int up = (i>0) ? grid[i][j] + pathHelper(i-1, j, grid, dp) : INT_MAX;
+        int left = (j>0) ?  grid[i][j] + pathHelper(i, j-1, grid, dp): INT_MAX;
+
+        return dp[i][j] = min(up, left);
+    }
+public:
+    int minPathSum(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int m =grid[0].size();
+        vector<vector<int>> dp(n, vector<int>(m, -1));
+
+        //memoization approach -> function above the main
+        return pathHelper(n-1, m-1, grid, dp);
+
+        //Tabulation approach
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+
+                if(i==0 && j==0) dp[0][0]=grid[0][0];
+                else{
+                int up = (i>0) ? grid[i][j] + dp[i-1][j] : INT_MAX;
+                int left = (j>0) ?  grid[i][j] + dp[i][j-1]: INT_MAX;
+
+                dp[i][j] = min(up, left);
+                }
+            }
+        }
+        return dp[n-1][m-1];
+    }
+};
+
+
+TC: O(N*M)
+SC: O(N*M)
