@@ -1,0 +1,72 @@
+[I] 213: House Robber - II 
+
+Description: 
+To find the maximum sum of subsequences without adjacent elements in a circular array. 
+i.e. the last element is adjacent to the first element.
+
+Intution: We can solve using the DP approach of House robbers like taking and not-taking approach
+if taken then jump 2 steps 
+if not taken then jump 1 step
+finally return max of both 
+
+Approach: But in this case if we take 1st then we need to exclude the last and vice versa. 
+For that we need to call the dp function twice with 2 diff search spaces (1->n and 0->n-1)
+
+Code:
+
+class Solution {
+private:
+    int robberSpaceOptimized(int start, int stop, vector<int>& nums){
+        int prev=nums[start];
+        int prev2=0;
+        for(int i=start+1; i<=stop; i++){
+
+            int pick = nums[i] + prev2;
+            int notPick = 0 + prev;
+
+            int curi = max(pick, notPick);
+
+            prev2=prev;
+            prev=curi;
+        }
+        return prev;
+    }
+    // int robber(int start, int idx, vector<int>& nums, vector<int>& dp){
+    //     if(idx==start){
+    //         return nums[idx];
+    //     }
+    //     if(idx<start){
+    //         return 0;
+    //     }
+
+    //     if(dp[idx]!=-1) return dp[idx];
+
+    //     int pick = nums[idx] + robber(start, idx-2, nums, dp);
+    //     int notPick = 0 + robber(start, idx-1, nums, dp);
+
+    //     return dp[idx] = max(pick, notPick);
+    // }
+public:
+    int rob(vector<int>& nums) {
+        int n = nums.size();
+        if(n==0) return 0;
+        if(n==1) return nums[0];
+
+        //DP approach ->memoization
+        // vector<int>dp1(n, -1);
+        // int left = robber(0, n-2, nums, dp1);
+        // vector<int>dp2(n, -1);
+        // int right = robber(1, n-1, nums, dp2);
+        // return max(left, right);
+
+        //DP approach ->tabulation with space optimization
+        int left = robberSpaceOptimized(0, n-2, nums);
+        int right = robberSpaceOptimized(1, n-1, nums);
+
+        return max(left, right);
+    }
+};
+
+
+TC: O(N)
+SC: O(1)
