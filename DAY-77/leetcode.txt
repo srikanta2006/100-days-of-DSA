@@ -1,0 +1,41 @@
+120 : Triangle
+
+Description: Given a triangle array, return the minimum path sum from top to bottom.
+For each step, you may move to an adjacent number of the row below. 
+More formally, if you are on index i on the current row, 
+you may move to either index i or index i + 1 on the next row. 
+down or diagonally left
+
+Intutiton : as we have single starting point and multiple end points
+lets not start from the last points(because we dont the exact stop)
+we start from the start node and when we hit row =n-1 (where n=number of rows) we return the cell values
+
+Approach : 
+We can solve this by 2D DP memoization but that gives TLE 
+so the tabulation approach we start from last but one row and go upto the (0,0) we return the dp[0][0]
+before that we initialize dp[n-1][i] for(i = 0-> n-1) as the cell value as it the last cell
+
+code:
+class Solution {
+public:
+    int minimumTotal(vector<vector<int>>& triangle) {
+        int n = triangle.size();
+
+        vector<vector<int>> dp(n, vector<int>(n, -1));
+
+        for(int j=0; j<=n-1; j++) dp[n-1][j]=triangle[n-1][j];
+
+        for(int i=n-2; i>=0; i--){
+            for(int j=i; j>=0; j--){
+                int d = triangle[i][j] + dp[i+1][j];
+                int dg = triangle[i][j] + dp[i+1][j+1];
+
+                dp[i][j] = min(d, dg);
+            }
+        }
+        return dp[0][0];
+    }
+};
+
+TC: approx O(n^2)
+SC: O(n) 
