@@ -18,7 +18,7 @@ Multi-Source BFS: Unlike a standard BFS that starts from a single node, this pro
 
 Level-Order Traversal (Time Tracking): By storing the time inside the queue alongside the coordinates ({{r, c}, time}), the algorithm naturally processes the spread minute-by-minute, guaranteeing that the final recorded time is the shortest possible path.
 
-In-Place State Management ($O(1)$ Space Optimization): Instead of allocating a massive $O(N \times M)$ vis array, you can use the input grid itself to track visited states by permanently overwriting fresh oranges (1) to rotten (2) as they are claimed.
+In-Place State Management O(1) Space Optimization: Instead of allocating a massive $O(N \times M)$ vis array, you can use the input grid itself to track visited states by permanently overwriting fresh oranges (1) to rotten (2) as they are claimed.
 
 🚨 Key Mistakes to Avoid in the Future:
 
