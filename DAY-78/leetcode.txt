@@ -1,0 +1,48 @@
+1463 : Cherry pickup
+
+description: an NxM matrix 
+two robots at (0,0) and (0, M-1)
+the grid contains cells with cherries, pick maximum cherries using the bots
+bots can move into 3 directions ( down, down-right, down-left) at each step.
+
+Intution : as the bots are moving in the same grid they can meet at points
+if met, then that cells cant be considered twice, so we need to move both the bots at same time.
+for each movement of bot1 there are 3 movement of bot2 so total 3*3 =9 movements per cell.
+
+Approach :
+1) write problem in terms of intution and write base cases -> if row==n-1 then return the col1 cell+col2 cell if col1!=col2 or else return only once.
+2) do stuff -> move to the 9 different conditions and extract the cherries based on same or diff cell logic.
+3)return the max of them.
+
+code:
+
+class Solution {
+private:
+    int picker(int row, int col1, int col2, int n, int m, vector<vector<int>>& grid, vector<vector<vector<int>>>& dp){//OOB
+        if(col1<0 || col1 >=m || col2<0 || col2>=m){
+            return -1e8;
+        }
+        if(row==n-1){ //base case
+            if(col1==col2) return grid[row][col1];
+            else return grid[row][col1] + grid[row][col2];
+        }
+
+        //dp check
+        if(dp[row][col1][col2]!=-1) return dp[row][col1][col2];
+        //do all stuff
+        int maxi = INT_MIN;
+        for(int i=-1; i<2; i++){ //robo one col
+            for(int j=-1; j<2; j++){ //robo two col
+                maxi = (col1!=col2) ? max(maxi, grid[row][col1]+grid[row][col2]+picker(row+1, col1+i, col2+j, n, m, grid, dp)) : max(maxi, grid[row][col1]+picker(row+1, col1+i, col2+j, n, m, grid, dp));
+            }
+        }
+        return dp[row][col1][col2] = maxi;
+    }
+public:
+    int cherryPickup(vector<vector<int>>& grid) {
+        int n= grid.size();
+        int m= grid[0].size();
+        vector<vector<vector<int>>> dp(n, vector<vector<int>>(m, vector<int>(m, -1)));
+        return picker(0, 0, m-1, n, m, grid, dp);
+    }
+}; 
