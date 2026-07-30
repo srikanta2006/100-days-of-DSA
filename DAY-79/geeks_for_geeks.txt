@@ -1,0 +1,47 @@
+[I] Partition Into 2 Subsets with Min Sum Diff
+Description:
+Given an array arr[]  containing non-negative integers, the task is to divide it into two sets set1 and set2 such that the absolute difference between their sums is minimum and find the minimum difference.
+
+Intutiton: In a problem to find weather a subarray of an array has a sum equal to target we use tabulation method 
+in that method a table of (n X target+1) is created with boolean values
+the answer for the target is stored in dp[n-1][target]
+but with this table we can also find whether a sum from (1->target) any of these can be attained using the last row
+
+Approach: we calculate the table for total sum of the array
+we can find the numbers from (1->total) which can be attained using the table 
+and find the absolute difference of the number with its total sum inverse
+
+code:
+class Solution {
+  public:
+    int minDifference(vector<int>& nums) {
+        int n =nums.size();
+        int total = 0;
+        for(int i : nums){
+            total+=i;
+        }
+        vector<vector<bool>> dp(n, vector<bool>(total+1, 0));
+        for(int idx=0; idx<n; idx++) dp[idx][0]=true;
+        if(nums[0] <= total) dp[0][nums[0]]=true;
+
+        for(int row=1; row<n; row++){
+            for(int target=1; target<=total; target++){
+                bool pick = (target>=nums[row]) ? dp[row-1][target-nums[row]]: false;
+                bool notPick = dp[row-1][target];
+
+                dp[row][target] = pick || notPick;
+            }
+        }
+        int mini = INT_MAX;
+        for(int i=0;  i <= total; i++){
+            if(dp[n-1][i]){
+                int first = i;
+                int second = total - first;
+                int diff = abs(first-second);
+                mini = min(mini, diff);
+            }
+        }
+        return mini;
+    }
+};
+
